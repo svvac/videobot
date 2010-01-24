@@ -9,6 +9,8 @@ HUE                 = cv.CV_CAP_PROP_HUE
 SATURATION          = cv.CV_CAP_PROP_SATURATION
 BRIGHTNESS          = cv.CV_CAP_PROP_BRIGHTNESS
 CONTRAST            = cv.CV_CAP_PROP_CONTRAST
+WIDTH               = cv.CV_CAP_FRAME_WIDTH
+HEIGHT              = cv.CV_CAP_FRAME_HEIGHT
 
 class Cam:
     """ OpenCV wrapper to easily manage cameras with an OO class. Say good bye to ugly cv.functions ! """
@@ -61,6 +63,14 @@ class Cam:
         """ Returns the image contrast of the device """
         return self.getProperty(CONTRAST)
     
+    def width(self):
+        """ Returns the frame width for the device """
+        return self.getProperty(WIDTH)
+    
+    def height(self):
+        """ Returns the frame height for the device """
+        return self.getProperty(HEIGHT)
+    
     
     def setHue(self, value):
         """ Sets the image hue of the device """
@@ -77,4 +87,12 @@ class Cam:
     def setContrast(self, value):
         """ Sets the image contrast of the device """
         return self.setProperty(CONTRAST, float(value))
+    
+    def setWidth(self, value):
+        """ Sets the frame width for the device """
+        return self.setProperty(WIDTH, float(value))
+    
+    def setHeight(self, value):
+        """ Sets the frame height for the device """
+        return self.setProperty(HEIGHT, float(value))
 
