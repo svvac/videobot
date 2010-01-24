@@ -37,8 +37,7 @@ class MainWindow(QtGui.QMainWindow):
             'camChangeHue': QtCore.SLOT('camChangeHue(int)'),
             'camChangeContrast': QtCore.SLOT('camChangeContrast(int)'),
             'camChangeSaturation': QtCore.SLOT('camChangeSaturation(int)'),
-            'camChangeBrightness': QtCore.SLOT('camChangeBrightness(int)'),
-            'camChangeFps': QtCore.SLOT('camChangeFps(int)')
+            'camChangeBrightness': QtCore.SLOT('camChangeBrightness(int)')
         }
         
         # Set window options
