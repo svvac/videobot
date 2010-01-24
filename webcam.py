@@ -278,15 +278,21 @@ class MainWindow(QtGui.QMainWindow):
         # Immediately grab and display a frame
         self.shot()
         
+        # Retrieve HSBC parameters
+        self.camUpdateHsbc()
+    
+    def camUpdateHsbc(self):
+        """ Updates image parameters sliders with cam's actual current values """
+        
         # Retrieve cam's HSBC (not the bank) parameters and set them to the
         # matching controls (see self.buildguiTabImg()).
         # Because sliders does only work with integers, we convert decimals
         # values (defined between 0 and 1) to percent. The reverse conversion
         # is done in slots self.camChange*() 
-        self.gui.tabs.img.hue.slider.setValue(self.cam.hue() * 100)
-        self.gui.tabs.img.contrast.slider.setValue(self.cam.contrast() * 100)
-        self.gui.tabs.img.saturation.slider.setValue(self.cam.saturation() * 100)
-        self.gui.tabs.img.brightness.slider.setValue(self.cam.brightness() * 100)
+        self.gui.tabs.img.hue.slider.setValue(round(self.cam.hue(), 2) * 100)
+        self.gui.tabs.img.contrast.slider.setValue(round(self.cam.contrast(), 2) * 100)
+        self.gui.tabs.img.saturation.slider.setValue(round(self.cam.saturation(), 2) * 100)
+        self.gui.tabs.img.brightness.slider.setValue(round(self.cam.brightness(), 2) * 100)
     
     
     def shot(self):
@@ -302,6 +308,9 @@ class MainWindow(QtGui.QMainWindow):
         # Opens the temp image, convert it into a QPixmap, and display it in the
         # label created on self.builGuiVideo()
         self.gui.video.frame.setPixmap(QtGui.QPixmap.fromImage(QtGui.QImage('.frame.tmp.jpg')))
+        
+        # Retrieve HSBC parameters (useless, since no updates but these made here)
+        #self.camUpdateHsbc()
     
     @QtCore.pyqtSlot()
     def saveFrame(self):
