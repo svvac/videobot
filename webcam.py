@@ -127,10 +127,10 @@ class MainWindow(QtGui.QMainWindow):
         self.gui.tabs.img.contrast = Empty()
         # Creates contrast slider
         self.gui.tabs.img.contrast.slider = QtGui.QSlider(Qt.Horizontal)
-        self.gui.tabs.img.contrast.slider.setMaximum(100)
+        self.gui.tabs.img.contrast.slider.setRange(-50, 50)
         # Creates contrast spinbox
         self.gui.tabs.img.contrast.spin = QtGui.QSpinBox()
-        self.gui.tabs.img.contrast.spin.setRange(0, 100)
+        self.gui.tabs.img.contrast.spin.setRange(-50, 50)
         self.gui.tabs.img.contrast.spin.setSuffix('%')
         # Add them to the layout
         self.gui.tabs.img.layout.addWidget(QtGui.QLabel('Contrast'), 2, 0)
@@ -155,10 +155,10 @@ class MainWindow(QtGui.QMainWindow):
         self.gui.tabs.img.brightness = Empty()
         # Creates brightness slider
         self.gui.tabs.img.brightness.slider = QtGui.QSlider(Qt.Horizontal)
-        self.gui.tabs.img.brightness.slider.setMaximum(100)
+        self.gui.tabs.img.brightness.slider.setRange(-50, 50)
         # Creates brightness spinbox
         self.gui.tabs.img.brightness.spin = QtGui.QSpinBox()
-        self.gui.tabs.img.brightness.spin.setRange(0, 100)
+        self.gui.tabs.img.brightness.spin.setRange(-50, 50)
         self.gui.tabs.img.brightness.spin.setSuffix('%')
         # Add them to the layout
         self.gui.tabs.img.layout.addWidget(QtGui.QLabel('Brightness'), 4, 0)
@@ -290,9 +290,14 @@ class MainWindow(QtGui.QMainWindow):
         # values (defined between 0 and 1) to percent. The reverse conversion
         # is done in slots self.camChange*() 
         self.gui.tabs.img.hue.slider.setValue(round(self.gui.video.device.hue(), 2) * 100)
-        self.gui.tabs.img.contrast.slider.setValue(round(self.gui.video.device.contrast(), 2) * 100)
         self.gui.tabs.img.saturation.slider.setValue(round(self.gui.video.device.saturation(), 2) * 100)
-        self.gui.tabs.img.brightness.slider.setValue(round(self.gui.video.device.brightness(), 2) * 100)
+        
+        # For these two, we want values from -50% to +50%. We substract 50 to
+        # the optained percentage to do it.
+        self.gui.tabs.img.brightness.slider.setValue(round(self.gui.video.device.brightness(), 2) * 100 - 50)
+        # For the contrast, the most small is the value, the most contrasted is
+        # the image. To fit common contrast settings, we revert this value.
+        self.gui.tabs.img.contrast.slider.setValue(round(self.gui.video.device.contrast(), 2) * -100 + 50)
     
     
     def shot(self):
@@ -335,8 +340,10 @@ class MainWindow(QtGui.QMainWindow):
         """ Sets cam's contrast value in percent (This is also a PyQt slot) """
         # Because QSliders does not work with decimal values, we use percent
         # instead. So we need to get a float between 0 and 1 then we set the
+        # value.
+        # And because the range is from -50% to +50%, we add 50 to get a positive
         # value
-        self.gui.video.device.setContrast(value / 100.0)
+        self.gui.video.device.setContrast((value * -1 + 50.0) / 100.0)
     
     @QtCore.pyqtSlot(int)
     def camChangeSaturation(self, value):
@@ -351,8 +358,10 @@ class MainWindow(QtGui.QMainWindow):
         """ Sets cam's brightness value in percent (This is also a PyQt slot) """
         # Because QSliders does not work with decimal values, we use percent
         # instead. So we need to get a float between 0 and 1 then we set the
-        # value
-        self.gui.video.device.setBrightness(value / 100.0)
+        # value.
+        # And because the range is from -50% to +50%, we add 50 to get a positive
+        # value.
+        self.gui.video.device.setBrightness((value + 50.0) / 100.0)
         
     
 
