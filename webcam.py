@@ -273,7 +273,7 @@ class MainWindow(QtGui.QMainWindow):
         """ Initializes camera """
         
         # Open camera with Cam OpenCV wrapper
-        self.cam = Camera.Cam(-1)
+        self.gui.video.device = Camera.Cam(-1)
         
         # Immediately grab and display a frame
         self.shot()
@@ -289,10 +289,10 @@ class MainWindow(QtGui.QMainWindow):
         # Because sliders does only work with integers, we convert decimals
         # values (defined between 0 and 1) to percent. The reverse conversion
         # is done in slots self.camChange*() 
-        self.gui.tabs.img.hue.slider.setValue(round(self.cam.hue(), 2) * 100)
-        self.gui.tabs.img.contrast.slider.setValue(round(self.cam.contrast(), 2) * 100)
-        self.gui.tabs.img.saturation.slider.setValue(round(self.cam.saturation(), 2) * 100)
-        self.gui.tabs.img.brightness.slider.setValue(round(self.cam.brightness(), 2) * 100)
+        self.gui.tabs.img.hue.slider.setValue(round(self.gui.video.device.hue(), 2) * 100)
+        self.gui.tabs.img.contrast.slider.setValue(round(self.gui.video.device.contrast(), 2) * 100)
+        self.gui.tabs.img.saturation.slider.setValue(round(self.gui.video.device.saturation(), 2) * 100)
+        self.gui.tabs.img.brightness.slider.setValue(round(self.gui.video.device.brightness(), 2) * 100)
     
     
     def shot(self):
@@ -304,7 +304,7 @@ class MainWindow(QtGui.QMainWindow):
         # and re-open it with Qt.
         
         # Grabs a frame and save it in the temp JPEG file
-        self.cam.save('.frame.tmp.jpg')
+        self.gui.video.device.save('.frame.tmp.jpg')
         # Opens the temp image, convert it into a QPixmap, and display it in the
         # label created on self.builGuiVideo()
         self.gui.video.frame.setPixmap(QtGui.QPixmap.fromImage(QtGui.QImage('.frame.tmp.jpg')))
@@ -320,7 +320,7 @@ class MainWindow(QtGui.QMainWindow):
         # Ask the user for the destination file
         dest = QtGui.QFileDialog.getSaveFileName(self, "Save frame as...", '', 'Images (*.png *.gif *.jpg *.jpeg)')
         # Grab and save a frame in the given file
-        self.cam.save(str(dest))
+        self.gui.video.device.save(str(dest))
     
     @QtCore.pyqtSlot(int)
     def camChangeHue(self, value):
@@ -328,7 +328,7 @@ class MainWindow(QtGui.QMainWindow):
         # Because QSliders does not work with decimal values, we use percent
         # instead. So we need to get a float between 0 and 1 then we set the
         # value
-        self.cam.setHue(value / 100.0)
+        self.gui.video.device.setHue(value / 100.0)
     
     @QtCore.pyqtSlot(int)
     def camChangeContrast(self, value):
@@ -336,7 +336,7 @@ class MainWindow(QtGui.QMainWindow):
         # Because QSliders does not work with decimal values, we use percent
         # instead. So we need to get a float between 0 and 1 then we set the
         # value
-        self.cam.setContrast(value / 100.0)
+        self.gui.video.device.setContrast(value / 100.0)
     
     @QtCore.pyqtSlot(int)
     def camChangeSaturation(self, value):
@@ -344,7 +344,7 @@ class MainWindow(QtGui.QMainWindow):
         # Because QSliders does not work with decimal values, we use percent
         # instead. So we need to get a float between 0 and 1 then we set the
         # value
-        self.cam.setSaturation(value / 100.0)
+        self.gui.video.device.setSaturation(value / 100.0)
     
     @QtCore.pyqtSlot(int)
     def camChangeBrightness(self, value):
@@ -352,7 +352,7 @@ class MainWindow(QtGui.QMainWindow):
         # Because QSliders does not work with decimal values, we use percent
         # instead. So we need to get a float between 0 and 1 then we set the
         # value
-        self.cam.setBrightness(value / 100.0)
+        self.gui.video.device.setBrightness(value / 100.0)
         
     
 
