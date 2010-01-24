@@ -4,7 +4,6 @@
 import sys
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import Qt
-from PyQt4.phonon import Phonon
 # Import Camera OpenCV wrapper to easily manage video captures with OpenCV
 # This is the home-made module Camera.py
 import Camera
@@ -44,7 +43,6 @@ class MainWindow(QtGui.QMainWindow):
         
         # Set window options
         self.setWindowTitle('VideoBot')
-        self.resize(300, 180)   # Defines window size (useless)
         
         # Builds widgets, bindings and some other init stuff
         self.init()
@@ -102,13 +100,6 @@ class MainWindow(QtGui.QMainWindow):
         # Creates the Grid layout and the future blank widget container
         self.e.lTabImg = QtGui.QGridLayout()
         self.e.wTabImgContainer = QtGui.QWidget()
-        
-        #self.e.fFpsSlider = QtGui.QSlider(Qt.Horizontal)
-        #self.e.fFpsSlider.setMaximum(1000)
-        #self.e.fFpsSlider.setMinimum(1)
-        #self.e.fFpsSlider.setValue(10)
-        #self.e.lTabImg.addWidget(QtGui.QLabel('FPS'), 0, 0)
-        #self.e.lTabImg.addWidget(self.e.fFpsSlider, 0, 1)
         
         # Creates hue slider
         self.e.fHueSlider = QtGui.QSlider(Qt.Horizontal)
@@ -334,13 +325,6 @@ class MainWindow(QtGui.QMainWindow):
         # instead. So we need to get a float between 0 and 1 then we set the
         # value
         self.cam.setBrightness(value / 100.0)
-    
-    @QtCore.pyqtSlot(int)
-    def camChangeFps(self, value):
-        self.fps = value
-        self.e.grabTimer.stop()
-        self.e.grabTimer.setInterval(1000 / value)
-        self.e.grabTimer.start()
         
     
 
