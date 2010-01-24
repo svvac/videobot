@@ -63,11 +63,11 @@ class Cam:
         """ Returns the image contrast of the device """
         return self.getProperty(CONTRAST)
     
-    def width(self):
+    def frameWidth(self):
         """ Returns the frame width for the device """
         return self.getProperty(WIDTH)
     
-    def height(self):
+    def frameHeight(self):
         """ Returns the frame height for the device """
         return self.getProperty(HEIGHT)
     
@@ -88,11 +88,11 @@ class Cam:
         """ Sets the image contrast of the device """
         return self.setProperty(CONTRAST, float(value))
     
-    def setWidth(self, value):
+    def setFrameWidth(self, value):
         """ Sets the frame width for the device """
         return self.setProperty(WIDTH, float(value))
     
-    def setHeight(self, value):
+    def setFrameHeight(self, value):
         """ Sets the frame height for the device """
         return self.setProperty(HEIGHT, float(value))
 
