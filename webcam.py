@@ -29,8 +29,8 @@ class MainWindow(QtGui.QMainWindow):
         # Contains Qt's signals
         self.signals = Empty()
         
-        # FPS configuration (unimplemented)
-        self.fps = 10
+        # FPS configuration
+        self.fps = 15 # fps
         
         # Easy access to custom Qt's slots
         self.slots = {
