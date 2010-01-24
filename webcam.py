@@ -24,7 +24,7 @@ class MainWindow(QtGui.QMainWindow):
         QtGui.QMainWindow.__init__(self)
         
         # Define widget containers
-        self.e = Empty()
+        self.gui = Empty()
         
         # Contains Qt's signals
         self.signals = Empty()
@@ -56,9 +56,11 @@ class MainWindow(QtGui.QMainWindow):
     
     def buildGui(self):
         """ Calls GUI's builders (separated to improve code readability) """
+        # Defines main namespace
+        self.gui.main = Empty()
         
         # Defines the main layout
-        self.e.lMain = QtGui.QVBoxLayout()
+        self.gui.main.layout = QtGui.QVBoxLayout()
         
         # Create tabs
         self.buildGuiVideo()
@@ -66,105 +68,123 @@ class MainWindow(QtGui.QMainWindow):
         
         # Includes main layout in a basic widget and add it to MainWindow
         # as the “CentralWidget”
-        self.e.wMainContainer = QtGui.QWidget()
-        self.e.wMainContainer.setLayout(self.e.lMain)
-        self.setCentralWidget(self.e.wMainContainer)
+        self.gui.main.container = QtGui.QWidget()
+        self.gui.main.container.setLayout(self.gui.main.layout)
+        self.setCentralWidget(self.gui.main.container)
     
     def buildGuiVideo(self):
         """ Setup video-related GUI stuff """
         
+        # Defines video namespace
+        self.gui.video = Empty()
+        
         # Creates QLabel where we'll place frames
-        self.e.labelFrame = QtGui.QLabel()
-        #self.e.labelFrame.setScaledContents(True)   # Useless
+        self.gui.video.frame = QtGui.QLabel()
         
         # Add the label to the main layout
-        self.e.lMain.addWidget(self.e.labelFrame)
+        self.gui.main.layout.addWidget(self.gui.video.frame)
     
     def buildGuiTabs(self):
         """ Setup bottom tabs """
         
+        # Creates tabs namespace
+        self.gui.tabs = Empty()
         # Creates the QTab widget
-        self.e.wTabs = QtGui.QTabWidget()
+        self.gui.tabs.tabs = QtGui.QTabWidget()
         
         # Populates tabs
         self.buildGuiTabControls()
         self.buildGuiTabImg()
         
         # Add tabs to the main layout
-        self.e.lMain.addWidget(self.e.wTabs)
+        self.gui.main.layout.addWidget(self.gui.tabs.tabs)
     
     def buildGuiTabImg(self):
         """ Creates image settings controls """
         
+        # Creates the tabs.img namespace
+        self.gui.tabs.img = Empty()
+        
         # Creates the Grid layout and the future blank widget container
-        self.e.lTabImg = QtGui.QGridLayout()
-        self.e.wTabImgContainer = QtGui.QWidget()
+        self.gui.tabs.img.layout = QtGui.QGridLayout()
+        self.gui.tabs.img.container = QtGui.QWidget()
         
+        # Creates hue namespace
+        self.gui.tabs.img.hue = Empty()
         # Creates hue slider
-        self.e.fHueSlider = QtGui.QSlider(Qt.Horizontal)
-        self.e.fHueSlider.setMaximum(100)
+        self.gui.tabs.img.hue.slider = QtGui.QSlider(Qt.Horizontal)
+        self.gui.tabs.img.hue.slider.setRange(0, 100)
         # Creates hue spinbox
-        self.e.fHueSpin = QtGui.QSpinBox()
-        self.e.fHueSpin.setRange(0, 100)
-        self.e.fHueSpin.setSuffix('%')
+        self.gui.tabs.img.hue.spin = QtGui.QSpinBox()
+        self.gui.tabs.img.hue.spin.setRange(0, 100)
+        self.gui.tabs.img.hue.spin.setSuffix('%')
         # Add them to the layout
-        self.e.lTabImg.addWidget(QtGui.QLabel('Hue'), 1, 0)
-        self.e.lTabImg.addWidget(self.e.fHueSlider, 1, 1)
-        self.e.lTabImg.addWidget(self.e.fHueSpin, 1, 2)
+        self.gui.tabs.img.layout.addWidget(QtGui.QLabel('Hue'), 1, 0)
+        self.gui.tabs.img.layout.addWidget(self.gui.tabs.img.hue.slider, 1, 1)
+        self.gui.tabs.img.layout.addWidget(self.gui.tabs.img.hue.spin, 1, 2)
         
+        # Creates contrast namespace
+        self.gui.tabs.img.contrast = Empty()
         # Creates contrast slider
-        self.e.fContrastSlider = QtGui.QSlider(Qt.Horizontal)
-        self.e.fContrastSlider.setMaximum(100)
+        self.gui.tabs.img.contrast.slider = QtGui.QSlider(Qt.Horizontal)
+        self.gui.tabs.img.contrast.slider.setMaximum(100)
         # Creates contrast spinbox
-        self.e.fContrastSpin = QtGui.QSpinBox()
-        self.e.fContrastSpin.setRange(0, 100)
-        self.e.fContrastSpin.setSuffix('%')
+        self.gui.tabs.img.contrast.spin = QtGui.QSpinBox()
+        self.gui.tabs.img.contrast.spin.setRange(0, 100)
+        self.gui.tabs.img.contrast.spin.setSuffix('%')
         # Add them to the layout
-        self.e.lTabImg.addWidget(QtGui.QLabel('Contrast'), 2, 0)
-        self.e.lTabImg.addWidget(self.e.fContrastSlider, 2, 1)
-        self.e.lTabImg.addWidget(self.e.fContrastSpin, 2, 2)
+        self.gui.tabs.img.layout.addWidget(QtGui.QLabel('Contrast'), 2, 0)
+        self.gui.tabs.img.layout.addWidget(self.gui.tabs.img.contrast.slider, 2, 1)
+        self.gui.tabs.img.layout.addWidget(self.gui.tabs.img.contrast.spin, 2, 2)
         
+        # Creates satutration namespace
+        self.gui.tabs.img.saturation = Empty()
         # Creates saturation slider
-        self.e.fSaturationSlider = QtGui.QSlider(Qt.Horizontal)
-        self.e.fSaturationSlider.setMaximum(100)
+        self.gui.tabs.img.saturation.slider = QtGui.QSlider(Qt.Horizontal)
+        self.gui.tabs.img.saturation.slider.setMaximum(100)
         # Creates saturation spinbox
-        self.e.fSaturationSpin = QtGui.QSpinBox()
-        self.e.fSaturationSpin.setRange(0, 100)
-        self.e.fSaturationSpin.setSuffix('%')
+        self.gui.tabs.img.saturation.spin = QtGui.QSpinBox()
+        self.gui.tabs.img.saturation.spin.setRange(0, 100)
+        self.gui.tabs.img.saturation.spin.setSuffix('%')
         # Add them to the layout
-        self.e.lTabImg.addWidget(QtGui.QLabel('Saturation'), 3, 0)
-        self.e.lTabImg.addWidget(self.e.fSaturationSlider, 3, 1)
-        self.e.lTabImg.addWidget(self.e.fSaturationSpin, 3, 2)
+        self.gui.tabs.img.layout.addWidget(QtGui.QLabel('Saturation'), 3, 0)
+        self.gui.tabs.img.layout.addWidget(self.gui.tabs.img.saturation.slider, 3, 1)
+        self.gui.tabs.img.layout.addWidget(self.gui.tabs.img.saturation.spin, 3, 2)
         
+        # Creates brightness namespace
+        self.gui.tabs.img.brightness = Empty()
         # Creates brightness slider
-        self.e.fBrightnessSlider = QtGui.QSlider(Qt.Horizontal)
-        self.e.fBrightnessSlider.setMaximum(100)
+        self.gui.tabs.img.brightness.slider = QtGui.QSlider(Qt.Horizontal)
+        self.gui.tabs.img.brightness.slider.setMaximum(100)
         # Creates brightness spinbox
-        self.e.fBrightnessSpin = QtGui.QSpinBox()
-        self.e.fBrightnessSpin.setRange(0, 100)
-        self.e.fBrightnessSpin.setSuffix('%')
+        self.gui.tabs.img.brightness.spin = QtGui.QSpinBox()
+        self.gui.tabs.img.brightness.spin.setRange(0, 100)
+        self.gui.tabs.img.brightness.spin.setSuffix('%')
         # Add them to the layout
-        self.e.lTabImg.addWidget(QtGui.QLabel('Brightness'), 4, 0)
-        self.e.lTabImg.addWidget(self.e.fBrightnessSlider, 4, 1)
-        self.e.lTabImg.addWidget(self.e.fBrightnessSpin, 4, 2)
+        self.gui.tabs.img.layout.addWidget(QtGui.QLabel('Brightness'), 4, 0)
+        self.gui.tabs.img.layout.addWidget(self.gui.tabs.img.brightness.slider, 4, 1)
+        self.gui.tabs.img.layout.addWidget(self.gui.tabs.img.brightness.spin, 4, 2)
         
         
         # Add layout to the blank widget container and add it to the tabs layout
-        self.e.wTabImgContainer.setLayout(self.e.lTabImg)
-        self.e.wTabs.addTab(self.e.wTabImgContainer, 'Video settings')
+        self.gui.tabs.img.container.setLayout(self.gui.tabs.img.layout)
+        self.gui.tabs.tabs.addTab(self.gui.tabs.img.container, 'Video settings')
     
     def buildGuiTabControls(self):
         """ Creates the contols tab """
         
+        # Creates the tabs.controls namespace
+        self.gui.tabs.controls = Empty()
+        
         # Creates a layout and a blank widget
-        self.e.lTabControls = QtGui.QFormLayout()
-        self.e.wTabControlsContainer = QtGui.QWidget()
+        self.gui.tabs.controls.layout = QtGui.QFormLayout()
+        self.gui.tabs.controls.container = QtGui.QWidget()
         
         # Add some widgets here...
         
         # Set layout to the container, and add it to the tabs layout
-        self.e.wTabControlsContainer.setLayout(self.e.lTabControls)
-        self.e.wTabs.addTab(self.e.wTabControlsContainer, 'Controls')
+        self.gui.tabs.controls.container.setLayout(self.gui.tabs.controls.layout)
+        self.gui.tabs.tabs.addTab(self.gui.tabs.controls.container, 'Controls')
     
     def buildBindings(self):
         """ Connects Qt's signals and slots """
@@ -172,82 +192,82 @@ class MainWindow(QtGui.QMainWindow):
         # Setting up hue stuff. Moving slider or changing its value updates
         # cam's settings. Also connects spinbox to the slider to easily
         # configure it.
-        self.connect(self.e.fHueSlider,
+        self.connect(self.gui.tabs.img.hue.slider,
                         QtCore.SIGNAL('sliderMoved(int)'),
                         self.slots['camChangeHue'])
-        self.connect(self.e.fHueSlider,
+        self.connect(self.gui.tabs.img.hue.slider,
                         QtCore.SIGNAL('valueChanged(int)'),
                         self.slots['camChangeHue'])
-        self.connect(self.e.fHueSlider,
+        self.connect(self.gui.tabs.img.hue.slider,
                         QtCore.SIGNAL('valueChanged(int)'),
-                        self.e.fHueSpin,
+                        self.gui.tabs.img.hue.spin,
                         QtCore.SLOT('setValue(int)'))
-        self.connect(self.e.fHueSpin,
+        self.connect(self.gui.tabs.img.hue.spin,
                         QtCore.SIGNAL('valueChanged(int)'),
-                        self.e.fHueSlider,
+                        self.gui.tabs.img.hue.slider,
                         QtCore.SLOT('setValue(int)'))
         
         # Setting up contrast stuff. Moving slider or changing its value updates
         # cam's settings. Also connects spinbox to the slider to easily
         # configure it.
-        self.connect(self.e.fContrastSlider,
+        self.connect(self.gui.tabs.img.contrast.slider,
                         QtCore.SIGNAL('sliderMoved(int)'),
                         self.slots['camChangeContrast'])
-        self.connect(self.e.fContrastSlider,
+        self.connect(self.gui.tabs.img.contrast.slider,
                         QtCore.SIGNAL('valueChanged(int)'),
                         self.slots['camChangeContrast'])
-        self.connect(self.e.fContrastSlider,
+        self.connect(self.gui.tabs.img.contrast.slider,
                         QtCore.SIGNAL('valueChanged(int)'),
-                        self.e.fContrastSpin,
+                        self.gui.tabs.img.contrast.spin,
                         QtCore.SLOT('setValue(int)'))
-        self.connect(self.e.fContrastSpin,
+        self.connect(self.gui.tabs.img.contrast.spin,
                         QtCore.SIGNAL('valueChanged(int)'),
-                        self.e.fContrastSlider,
+                        self.gui.tabs.img.contrast.slider,
                         QtCore.SLOT('setValue(int)'))
         
         # Setting up brightness stuff. Moving slider or changing its value
         # updates cam's settings. Also connects spinbox to the slider to easily
         # configure it.
-        self.connect(self.e.fBrightnessSlider,
+        self.connect(self.gui.tabs.img.brightness.slider,
                         QtCore.SIGNAL('sliderMoved(int)'),
                         self.slots['camChangeBrightness'])
-        self.connect(self.e.fBrightnessSlider,
+        self.connect(self.gui.tabs.img.brightness.slider,
                         QtCore.SIGNAL('valueChanged(int)'),
                         self.slots['camChangeBrightness'])
-        self.connect(self.e.fBrightnessSlider,
+        self.connect(self.gui.tabs.img.brightness.slider,
                         QtCore.SIGNAL('valueChanged(int)'),
-                        self.e.fBrightnessSpin,
+                        self.gui.tabs.img.brightness.spin,
                         QtCore.SLOT('setValue(int)'))
-        self.connect(self.e.fBrightnessSpin,
+        self.connect(self.gui.tabs.img.brightness.spin,
                         QtCore.SIGNAL('valueChanged(int)'),
-                        self.e.fBrightnessSlider,
+                        self.gui.tabs.img.brightness.slider,
                         QtCore.SLOT('setValue(int)'))
         
         # Setting up saturation stuff. Moving slider or changing its value
         # updates cam's settings. Also connects spinbox to the slider to easily
         # configure it.
-        self.connect(self.e.fSaturationSlider,
+        self.connect(self.gui.tabs.img.saturation.slider,
                         QtCore.SIGNAL('sliderMoved(int)'),
                         self.slots['camChangeSaturation'])
-        self.connect(self.e.fSaturationSlider,
+        self.connect(self.gui.tabs.img.saturation.slider,
                         QtCore.SIGNAL('valueChanged(int)'),
                         self.slots['camChangeSaturation'])
-        self.connect(self.e.fSaturationSlider,
+        self.connect(self.gui.tabs.img.saturation.slider,
                         QtCore.SIGNAL('valueChanged(int)'),
-                        self.e.fSaturationSpin,
+                        self.gui.tabs.img.saturation.spin,
                         QtCore.SLOT('setValue(int)'))
-        self.connect(self.e.fSaturationSpin,
+        self.connect(self.gui.tabs.img.saturation.spin,
                         QtCore.SIGNAL('valueChanged(int)'),
-                        self.e.fSaturationSlider,
+                        self.gui.tabs.img.saturation.slider,
                         QtCore.SLOT('setValue(int)'))
         
         # Setting up the timer to periodically retrieve a cam's frame and
         # display it.
         # Interval between two requests is defined by self.fps (see
         # self.__init__)
-        self.e.grabTimer = QtCore.QTimer(self)
-        self.connect(self.e.grabTimer, QtCore.SIGNAL('timeout()'), self.shot)
-        self.e.grabTimer.start(1000 / self.fps)
+        self.gui.video.timer = QtCore.QTimer(self)
+        self.connect(self.gui.video.timer, QtCore.SIGNAL('timeout()'), self.shot)
+        self.gui.video.timer.start(1000 / self.fps)
     
     def initCam(self):
         """ Initializes camera """
@@ -263,10 +283,10 @@ class MainWindow(QtGui.QMainWindow):
         # Because sliders does only work with integers, we convert decimals
         # values (defined between 0 and 1) to percent. The reverse conversion
         # is done in slots self.camChange*() 
-        self.e.fHueSlider.setValue(self.cam.hue() * 100)
-        self.e.fContrastSlider.setValue(self.cam.contrast() * 100)
-        self.e.fSaturationSlider.setValue(self.cam.saturation() * 100)
-        self.e.fBrightnessSlider.setValue(self.cam.brightness() * 100)
+        self.gui.tabs.img.hue.slider.setValue(self.cam.hue() * 100)
+        self.gui.tabs.img.contrast.slider.setValue(self.cam.contrast() * 100)
+        self.gui.tabs.img.saturation.slider.setValue(self.cam.saturation() * 100)
+        self.gui.tabs.img.brightness.slider.setValue(self.cam.brightness() * 100)
     
     
     def shot(self):
@@ -281,7 +301,7 @@ class MainWindow(QtGui.QMainWindow):
         self.cam.save('.frame.tmp.jpg')
         # Opens the temp image, convert it into a QPixmap, and display it in the
         # label created on self.builGuiVideo()
-        self.e.labelFrame.setPixmap(QtGui.QPixmap.fromImage(QtGui.QImage('.frame.tmp.jpg')))
+        self.gui.video.frame.setPixmap(QtGui.QPixmap.fromImage(QtGui.QImage('.frame.tmp.jpg')))
     
     @QtCore.pyqtSlot()
     def saveFrame(self):
