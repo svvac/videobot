@@ -9,8 +9,8 @@ HUE                 = cv.CV_CAP_PROP_HUE
 SATURATION          = cv.CV_CAP_PROP_SATURATION
 BRIGHTNESS          = cv.CV_CAP_PROP_BRIGHTNESS
 CONTRAST            = cv.CV_CAP_PROP_CONTRAST
-WIDTH               = cv.CV_CAP_FRAME_WIDTH
-HEIGHT              = cv.CV_CAP_FRAME_HEIGHT
+WIDTH               = cv.CV_CAP_PROP_FRAME_WIDTH
+HEIGHT              = cv.CV_CAP_PROP_FRAME_HEIGHT
 
 class Cam:
     """ OpenCV wrapper to easily manage cameras with an OO class. Say good bye to ugly cv.functions ! """
