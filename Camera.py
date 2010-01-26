@@ -1,6 +1,34 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
+#    ====================
+#    OpenCV + V4L issue :
+#    ====================
+#
+# If you get the following error message  at the initialisation
+# of the device @ Camera.Cam(-1) @ under Linux :
+# 
+#   mmap: Invalid argument
+#   munmap: Invalid argument
+#   munmap: Invalid argument
+#   munmap: Invalid argument
+#   munmap: Invalid argument
+#   Unable to stop the stream.: Bad file descriptor
+#   munmap: Invalid argument
+#   munmap: Invalid argument
+#   munmap: Invalid argument
+#   munmap: Invalid argument
+# 
+# Try to launch the script with the following command :
+# 
+#   $ LD_PRELOAD="/usr/lib/libv4l/v4l2convert.so" ./webcam.py
+# 
+# (assuming that “webcam.py” is your final script name, and that
+# “/usr/bin/libv4l/v4l2convert.so” is the path to your own 
+# V4L2convert shared object)
+# Note: “$” is the command prompt
+
+
 # Imports OpenCV functions
 import cv
 
