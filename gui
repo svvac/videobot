@@ -1,0 +1,8 @@
+#! /bin/sh
+#-*- coding:utf-8 -*-
+
+# This script is a facility to load the device properly
+# without any V4L mmap error (see bug #17)
+# Factually, this tells OpenCV to use V4L2 instead of V4L1
+
+LD_PRELOAD="/usr/lib/libv4l/v4l2convert.so" ./webcam.py

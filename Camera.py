@@ -18,15 +18,32 @@
 #   munmap: Invalid argument
 #   munmap: Invalid argument
 #   munmap: Invalid argument
+#
+# Use the GUI launcher with one of these commands :
+#
+#   $ ./gui
+#   $ bash gui
+#   $ sh gui
+#
+# You'll maybe need to make it executable before :
+#
+#   $ chmod +x gui
 # 
-# Try to launch the script with the following command :
+# This launches the script with the following command :
 # 
-#   $ LD_PRELOAD="/usr/lib/libv4l/v4l2convert.so" ./webcam.py
+#   LD_PRELOAD="/usr/lib/libv4l/v4l2convert.so" ./webcam.py
 # 
 # (assuming that “webcam.py” is your final script name, and that
 # “/usr/bin/libv4l/v4l2convert.so” is the path to your own 
 # V4L2convert shared object)
-# Note: “$” is the command prompt
+# Update the line in ./gui if needed. This way, you'll have an
+# easier access to the script.
+# 
+# This command had for effect to use V4L2 instead of the default
+# V4L1. Even if it sounds better, there's some undesired side
+# effects, particularly a slower video stream. See bug #17 for
+# further informations.
+# 
 
 
 # Imports OpenCV functions
