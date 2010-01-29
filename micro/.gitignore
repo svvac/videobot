@@ -1,11 +1,1 @@
-*.c.ini
-*.asm
-*.hex
-*.dbg
-*.dct
-*.dlt
 *.log
-*.mcl
-*.lst
-*.dic
-*.mcppi_callertable.txt

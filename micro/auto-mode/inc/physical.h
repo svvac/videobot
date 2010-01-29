@@ -1,8 +1,8 @@
 /*
  * videobot - automatic mode
- * description:  The bot goes forward until it encounters an obstacle
+ * description:  Maps board's ports
  *               (in heavy developpement)
- * file: auto-mode.c
+ * file: physical.h
  *
  * config:
  *   controller:      PIC16F877A (EasyPic 4)
@@ -15,20 +15,6 @@
  * GitHub repo: http://github.com/swordofpain/videobot
  */
 
-#include "inc/physical.h"
-
-void main() {
-    OPTION_REG = 0x87;
-    INTCON = 0xA0;
-    
-    TRISA = 0;
-    PORTA = 0;
-    TRISB = 0b111111;
-    TRISD = 0;
-    PORTD = 0;
-
-    while (1) {
-        LED1 = LED2 = LED3 = 1;
-    }
-}
-
+#define LED1 PORTD.F0
+#define LED2 PORTD.F1
+#define LED3 PORTD.F2

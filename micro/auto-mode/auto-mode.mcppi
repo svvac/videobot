@@ -1,22 +1,3 @@
-#line 1 "C:/Documents and Settings/swordofpain/Mes documents/Work/auto-mode/auto-mode.c"
-#line 1 "c:/documents and settings/swordofpain/mes documents/work/auto-mode/inc/physical.h"
-#line 20 "C:/Documents and Settings/swordofpain/Mes documents/Work/auto-mode/auto-mode.c"
-void main() {
- OPTION_REG = 0x87;
- INTCON = 0xA0;
-
- TRISA = 0;
- PORTA = 0;
- TRISB = 0b111111;
- TRISD = 0;
- PORTD = 0;
-
- while (1) {
-  PORTD.F0  =  PORTD.F1  =  PORTD.F2  = 1;
- }
-}
-[ACTIVE_TAB]
-Value=auto-mode.c
 [DEVICE]
 Name=P16F877A
 Clock=8000000
@@ -24,6 +5,8 @@ Clock=8000000
 Value=0
 [BUILD_TYPE]
 Value=0
+[ACTIVE_TAB]
+Value=auto-mode.c
 [USE_EEPROM]
 Value=0
 [EEPROM_DEFINITION]
