@@ -2,7 +2,7 @@
 #line 1 "s:/videobot/micro/auto-mode/inc/io.h"
 #line 25 "S:/videobot/micro/auto-mode/auto-mode.c"
 void main() {
- const int delay = 10;
+ const int delay = 500;
  int i = 0;
 
 

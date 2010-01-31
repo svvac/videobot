@@ -56,15 +56,20 @@ L__main12:
 	BSF        PORTC+0, 0
 L__main13:
 ;auto-mode.c,51 :: 		Delay_ms(delay);
-	MOVLW      26
+	MOVLW      6
+	MOVWF      R11+0
+	MOVLW      19
 	MOVWF      R12+0
-	MOVLW      248
+	MOVLW      173
 	MOVWF      R13+0
 L_main4:
 	DECFSZ     R13+0, 1
 	GOTO       L_main4
 	DECFSZ     R12+0, 1
 	GOTO       L_main4
+	DECFSZ     R11+0, 1
+	GOTO       L_main4
+	NOP
 	NOP
 ;auto-mode.c,52 :: 		LED2 = i % 2;
 	MOVLW      2
@@ -88,15 +93,20 @@ L__main14:
 	BSF        PORTC+0, 1
 L__main15:
 ;auto-mode.c,53 :: 		Delay_ms(delay);
-	MOVLW      26
+	MOVLW      6
+	MOVWF      R11+0
+	MOVLW      19
 	MOVWF      R12+0
-	MOVLW      248
+	MOVLW      173
 	MOVWF      R13+0
 L_main5:
 	DECFSZ     R13+0, 1
 	GOTO       L_main5
 	DECFSZ     R12+0, 1
 	GOTO       L_main5
+	DECFSZ     R11+0, 1
+	GOTO       L_main5
+	NOP
 	NOP
 ;auto-mode.c,54 :: 		LED3 = i % 2;
 	MOVLW      2
@@ -120,15 +130,20 @@ L__main16:
 	BSF        PORTC+0, 2
 L__main17:
 ;auto-mode.c,55 :: 		Delay_ms(delay);
-	MOVLW      26
+	MOVLW      6
+	MOVWF      R11+0
+	MOVLW      19
 	MOVWF      R12+0
-	MOVLW      248
+	MOVLW      173
 	MOVWF      R13+0
 L_main6:
 	DECFSZ     R13+0, 1
 	GOTO       L_main6
 	DECFSZ     R12+0, 1
 	GOTO       L_main6
+	DECFSZ     R11+0, 1
+	GOTO       L_main6
+	NOP
 	NOP
 ;auto-mode.c,56 :: 		LED4 = i % 2;
 	MOVLW      2
@@ -152,15 +167,20 @@ L__main18:
 	BSF        PORTC+0, 3
 L__main19:
 ;auto-mode.c,57 :: 		Delay_ms(delay);
-	MOVLW      26
+	MOVLW      6
+	MOVWF      R11+0
+	MOVLW      19
 	MOVWF      R12+0
-	MOVLW      248
+	MOVLW      173
 	MOVWF      R13+0
 L_main7:
 	DECFSZ     R13+0, 1
 	GOTO       L_main7
 	DECFSZ     R12+0, 1
 	GOTO       L_main7
+	DECFSZ     R11+0, 1
+	GOTO       L_main7
+	NOP
 	NOP
 ;auto-mode.c,58 :: 		LED5 = i % 2;
 	MOVLW      2
@@ -184,15 +204,20 @@ L__main20:
 	BSF        PORTC+0, 4
 L__main21:
 ;auto-mode.c,59 :: 		Delay_ms(delay);
-	MOVLW      26
+	MOVLW      6
+	MOVWF      R11+0
+	MOVLW      19
 	MOVWF      R12+0
-	MOVLW      248
+	MOVLW      173
 	MOVWF      R13+0
 L_main8:
 	DECFSZ     R13+0, 1
 	GOTO       L_main8
 	DECFSZ     R12+0, 1
 	GOTO       L_main8
+	DECFSZ     R11+0, 1
+	GOTO       L_main8
+	NOP
 	NOP
 ;auto-mode.c,60 :: 		LED6 = i % 2;
 	MOVLW      2
@@ -216,15 +241,20 @@ L__main22:
 	BSF        PORTC+0, 5
 L__main23:
 ;auto-mode.c,61 :: 		Delay_ms(delay);
-	MOVLW      26
+	MOVLW      6
+	MOVWF      R11+0
+	MOVLW      19
 	MOVWF      R12+0
-	MOVLW      248
+	MOVLW      173
 	MOVWF      R13+0
 L_main9:
 	DECFSZ     R13+0, 1
 	GOTO       L_main9
 	DECFSZ     R12+0, 1
 	GOTO       L_main9
+	DECFSZ     R11+0, 1
+	GOTO       L_main9
+	NOP
 	NOP
 ;auto-mode.c,62 :: 		LED7 = i % 2;
 	MOVLW      2
@@ -248,15 +278,20 @@ L__main24:
 	BSF        PORTC+0, 6
 L__main25:
 ;auto-mode.c,63 :: 		Delay_ms(delay);
-	MOVLW      26
+	MOVLW      6
+	MOVWF      R11+0
+	MOVLW      19
 	MOVWF      R12+0
-	MOVLW      248
+	MOVLW      173
 	MOVWF      R13+0
 L_main10:
 	DECFSZ     R13+0, 1
 	GOTO       L_main10
 	DECFSZ     R12+0, 1
 	GOTO       L_main10
+	DECFSZ     R11+0, 1
+	GOTO       L_main10
+	NOP
 	NOP
 ;auto-mode.c,64 :: 		LED8 = i % 2;
 	MOVLW      2
@@ -280,15 +315,20 @@ L__main26:
 	BSF        PORTC+0, 7
 L__main27:
 ;auto-mode.c,65 :: 		Delay_ms(delay);
-	MOVLW      26
+	MOVLW      6
+	MOVWF      R11+0
+	MOVLW      19
 	MOVWF      R12+0
-	MOVLW      248
+	MOVLW      173
 	MOVWF      R13+0
 L_main11:
 	DECFSZ     R13+0, 1
 	GOTO       L_main11
 	DECFSZ     R12+0, 1
 	GOTO       L_main11
+	DECFSZ     R11+0, 1
+	GOTO       L_main11
+	NOP
 	NOP
 ;auto-mode.c,66 :: 		}
 	GOTO       L_main2
