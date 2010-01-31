@@ -12,7 +12,8 @@ Value=0
 [EEPROM_DEFINITION]
 Value=
 [FILES]
-Count=0
+Count=1
+File0=auto-mode.c
 [BINARIES]
 Count=0
 [IMAGES]
@@ -23,14 +24,19 @@ File0=auto-mode.c
 [OTHER_FILES]
 Count=0
 [SEARCH_PATH]
-Count=3
+Count=5
 Path0=C:\Program Files\Mikroelektronika\mikroC PRO for PIC\defs\
 Path1=C:\Program Files\Mikroelektronika\mikroC PRO for PIC\Uses\P16\
-Path2=C:\Documents and Settings\swordofpain\Mes documents\Work\auto-mode\
+Path2=S:\videobot\micro\auto-mode\
+Path3=C:\Documents and Settings\swordofpain\Mes documents\Work\auto-mode\
+Path4=S:\videobot\micro\auto-mode\inc\
 [HEADER_PATH]
-Count=0
+Count=1
+Path0=S:\videobot\micro\auto-mode\inc\
 [HEADERS]
-Count=0
+Count=2
+File0=S:\videobot\micro\auto-mode\inc\io.h
+File1=S:\videobot\micro\auto-mode\inc\auto-mode.h
 [PLDS]
 Count=0
 [Useses]

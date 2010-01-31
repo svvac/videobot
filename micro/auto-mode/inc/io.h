@@ -15,6 +15,13 @@
  * GitHub repo: http://github.com/swordofpain/videobot
  */
 
-#define LED1 PORTD.F0
-#define LED2 PORTD.F1
-#define LED3 PORTD.F2
+#define bSTART      PORTB.F7
+
+#define LED1        PORTC.F0
+#define LED2        PORTC.F1
+#define LED3        PORTC.F2
+#define LED4        PORTC.F3
+#define LED5        PORTC.F4
+#define LED6        PORTC.F5
+#define LED7        PORTC.F6
+#define LED8        PORTC.F7
