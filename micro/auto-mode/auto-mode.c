@@ -5,7 +5,7 @@
  *               Please note that I've absolutely no experience in MCU
  *               programmation, especially with C. I'm actually trying
  *               some pieces of code to catch the logic of the board,
- *               before to start the “real” program.
+ *               before to start the "real" program.
  * file: auto-mode.c
  *
  * config:
@@ -22,10 +22,15 @@
 // Bounds I/O associations
 #include "inc/io.h"
 
+// Set to "1" if in debug mode
+const int DBGMODE = 1;
+
+// Includes bot's functions
+#include "inc/move.h"
+#include "inc/obstacle.h"
+//#include "inc/logic.h"
+
 void main() {
-    const int delay = 500;
-    int i = 0;
-    
     // TMR0 prescaler. No idea of what this means
     OPTION_REG = 0x87;
     // Allow TMR0 interruptions
@@ -34,35 +39,53 @@ void main() {
     // Outputs
     TRISC = 0;
     PORTC = 0;
-    
     TRISD = 0;
     PORTD = 0;
     
-    // Input (I guess)
+    // Input
     TRISB = 0b11111111;
+    
+    // Turns on READY LED
+    dREADY = 1;
+    // Turns on WAITING LED
+    dWAITING = 1;
+    
+    // If in debug mode, turns on DEBUG LED
+    if (DBGMODE)    dDEBUG = 1;
+    
+    // Stops motors (just in case)
+    moveStops();
     
     // Wait until user press on start
     while (!bSTART);
+    // Turns off READY and WAITING LEDs
+    dREADY = 0;
+    dWAITING = 0;
+    // Turns on RUNNING LED
+    dRUN = 1;
     
     // Main loop
     while (1) {
-        i++;
-        LED1 = i % 2;
-        Delay_ms(delay);
-        LED2 = i % 2;
-        Delay_ms(delay);
-        LED3 = i % 2;
-        Delay_ms(delay);
-        LED4 = i % 2;
-        Delay_ms(delay);
-        LED5 = i % 2;
-        Delay_ms(delay);
-        LED6 = i % 2;
-        Delay_ms(delay);
-        LED7 = i % 2;
-        Delay_ms(delay);
-        LED8 = i % 2;
-        Delay_ms(delay);
+        // Distance checks
+        // If obstacle is "FAR AWAY", we continue forward
+        if (obstacleDistanceIsFaraway()) {
+            moveForwards();
+        // If obsacle is close, but not too much, we turns left
+        } else if (obstacleDistanceIsOk()) {
+            moveTurnsLeft();
+        // If obstacle is too close, we stops motors and stops the program
+        } else {
+            moveStops();
+            break;
+        }
     }
+    
+    // This is the shutdown program, executed when the infinite loop
+    // is broken.
+    // We turns off the RUN LED and turns on the ERROR LED
+    dRUN = 0;
+    dERROR = 1;
+    // Just in case, we stops the motors.
+    moveStops();
 }
 

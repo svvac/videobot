@@ -19,8 +19,10 @@ Count=0
 [IMAGES]
 Count=0
 [OPENED_FILES]
-Count=1
+Count=3
 File0=auto-mode.c
+File1=inc\move.h
+File2=inc\obstacle.h
 [OTHER_FILES]
 Count=0
 [SEARCH_PATH]
@@ -34,9 +36,11 @@ Path4=S:\videobot\micro\auto-mode\inc\
 Count=1
 Path0=S:\videobot\micro\auto-mode\inc\
 [HEADERS]
-Count=2
+Count=4
 File0=S:\videobot\micro\auto-mode\inc\io.h
 File1=S:\videobot\micro\auto-mode\inc\auto-mode.h
+File2=S:\videobot\micro\auto-mode\inc\obstacle.h
+File3=S:\videobot\micro\auto-mode\inc\move.h
 [PLDS]
 Count=0
 [Useses]
