@@ -221,6 +221,8 @@ ibf_trise_bit
 ibov
 ibov_bit
 ibov_trise_bit
+idistcritoffset
+idistokoffset
 indf
 int2double
 intcon

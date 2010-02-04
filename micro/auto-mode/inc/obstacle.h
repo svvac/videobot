@@ -20,17 +20,21 @@ const int ObstacleCriticalMetric    = 20;       //  <=      DIST_CRITICAL
 const int ObstacleOkMetric          = 40;       //  <=      DIST_OK
 const int ObstacleFarawayMetric     = 100;      //  >=      DIST_FARAWAY
 
+// Set accessors to memory snapshots entries
+const int iDistOkOffset = 4;
+const int iDistCritOffset = 3;
+
 
 /*
- * int obstacleDistanceIsFaraway(void)
+ * int obstacleDistanceIsFaraway(int mem[5])
  *
  * Returns true if distance to object can't be precisely computed.
  */
-int obstacleDistanceIsFaraway(void) {
+int obstacleDistanceIsFaraway(int mem[5]) {
     // If in debug mode
     if (DBGMODE) {
         // Returns true *only* if iDISTFAW == iDISTOK == 0
-        return (!iDISTCRIT && !iDISTOK);
+        return (!mem[iDistCritOffset] && !mem[iDistOkOffset]);
     }
     
     // If in normal mode
@@ -39,15 +43,15 @@ int obstacleDistanceIsFaraway(void) {
 }
 
 /*
- * int obstacleDistanceIsOk(void)
+ * int obstacleDistanceIsOk(int mem[5])
  *
  * Returns true if distance to object is between CRITICAL and FARAWAY
  */
-int obstacleDistanceIsOk(void) {
+int obstacleDistanceIsOk(int mem[5]) {
     // If in debug mode
     if (DBGMODE) {
         // Returns true if iDISTCRIT == 0 and iDISTOK == 1
-        return (!iDISTCRIT && iDISTOK);
+        return (!mem[iDistCritOffset] && mem[iDistOkOffset]);
     }
     
     // If in normal mode
@@ -56,15 +60,15 @@ int obstacleDistanceIsOk(void) {
 }
 
 /*
- * int obstacleDistanceIsCritical(void)
+ * int obstacleDistanceIsCritical(int mem[5])
  *
  * Returns true if distance to object is lower than CRITICAL
  */
-int obstacleDistanceIsCritical(void) {
+int obstacleDistanceIsCritical(int mem[5]) {
     // If in debug mode
     if (DBGMODE) {
         // Returns true if iDISTCRIT == 1
-        return (iDISTCRIT);
+        return (mem[iDistCritOffset]);
     }
     
     // If in normal mode
@@ -73,18 +77,18 @@ int obstacleDistanceIsCritical(void) {
 }
 
 /*
- * int obstacleGetDistance(void)
+ * int obstacleGetDistance(int mem[5])
  *
  * Returns the distance (in centimeters) to the obstacle
  */
-int obstacleGetDistance(void) {
+int obstacleGetDistance(int mem[5]) {
     // If in debug mode
     if (DBGMODE) {
         // We can't have a precise idea of the distance because there's no
         // captor. So we returns limits instead.
         
-        if (obstacleDistanceIsFaraway())        return ObstacleFarawayMetric;
-        else if (obstacleDistanceIsOk())        return ObstacleOkMetric;
+        if (obstacleDistanceIsFaraway(mem))     return ObstacleFarawayMetric;
+        else if (obstacleDistanceIsOk(mem))     return ObstacleOkMetric;
         else                                    return ObstacleCriticalMetric;
     }
     

@@ -62,51 +62,55 @@ void moveTurnsLeft(void) {
 const int ObstacleCriticalMetric = 20;
 const int ObstacleOkMetric = 40;
 const int ObstacleFarawayMetric = 100;
-#line 29 "s:/videobot/micro/auto-mode/inc/obstacle.h"
-int obstacleDistanceIsFaraway(void) {
+
+
+const int iDistOkOffset = 4;
+const int iDistCritOffset = 3;
+#line 33 "s:/videobot/micro/auto-mode/inc/obstacle.h"
+int obstacleDistanceIsFaraway(int mem[5]) {
 
  if (DBGMODE) {
 
- return (! PORTB.F2  && ! PORTB.F3 );
+ return (!mem[iDistCritOffset] && !mem[iDistOkOffset]);
  }
 
 
 
  return 0;
 }
-#line 46 "s:/videobot/micro/auto-mode/inc/obstacle.h"
-int obstacleDistanceIsOk(void) {
+#line 50 "s:/videobot/micro/auto-mode/inc/obstacle.h"
+int obstacleDistanceIsOk(int mem[5]) {
 
  if (DBGMODE) {
 
- return (! PORTB.F2  &&  PORTB.F3 );
+ return (!mem[iDistCritOffset] && mem[iDistOkOffset]);
  }
 
 
 
  return 0;
 }
-#line 63 "s:/videobot/micro/auto-mode/inc/obstacle.h"
-int obstacleDistanceIsCritical(void) {
+#line 67 "s:/videobot/micro/auto-mode/inc/obstacle.h"
+int obstacleDistanceIsCritical(int mem[5]) {
 
  if (DBGMODE) {
 
- return ( PORTB.F2 );
+ return (mem[iDistCritOffset]);
  }
 
 
 
  return 1;
 }
-#line 80 "s:/videobot/micro/auto-mode/inc/obstacle.h"
-int obstacleGetDistance(void) {
+#line 84 "s:/videobot/micro/auto-mode/inc/obstacle.h"
+int obstacleGetDistance(int mem[5]) {
 
  if (DBGMODE) {
 
 
 
- if (obstacleDistanceIsFaraway()) return ObstacleFarawayMetric;
- else if (obstacleDistanceIsOk()) return ObstacleOkMetric;
+ if (obstacleDistanceIsFaraway(mem)) return ObstacleFarawayMetric;
+ else if (obstacleDistanceIsOk(mem)) return ObstacleOkMetric;
  else return ObstacleCriticalMetric;
  }
 
@@ -116,9 +120,9 @@ int obstacleGetDistance(void) {
 #line 33 "S:/videobot/micro/auto-mode/auto-mode.c"
 void main() {
 
- OPTION_REG = 0x87;
 
- INTCON = 0xA0;
+
+ INTCON = 0;
 
 
  TRISC = 0;
@@ -127,7 +131,7 @@ void main() {
  PORTD = 0;
 
 
- TRISB = 0b11111111;
+ TRISB = 0xff;
 
 
   PORTD.F0  = 1;
@@ -151,11 +155,19 @@ void main() {
 
  while (1) {
 
+ int mem[5];
+ mem[0] =  PORTB.F7 ;
+ mem[1] =  PORTB.F0 ;
+ mem[2] =  PORTB.F1 ;
+ mem[3] =  PORTB.F2 ;
+ mem[4] =  PORTB.F3 ;
 
- if (obstacleDistanceIsFaraway()) {
+
+
+ if (obstacleDistanceIsFaraway(mem)) {
  moveForwards();
 
- } else if (obstacleDistanceIsOk()) {
+ } else if (obstacleDistanceIsOk(mem)) {
  moveTurnsLeft();
 
  } else {

@@ -32,9 +32,9 @@ const int DBGMODE = 1;
 
 void main() {
     // TMR0 prescaler. No idea of what this means
-    OPTION_REG = 0x87;
+    //OPTION_REG = 0x87;
     // Allow TMR0 interruptions
-    INTCON = 0xA0;
+    INTCON = 0;
     
     // Outputs
     TRISC = 0;
@@ -43,7 +43,7 @@ void main() {
     PORTD = 0;
     
     // Input
-    TRISB = 0b11111111;
+    TRISB = 0xff;
     
     // Turns on READY LED
     dREADY = 1;
@@ -66,12 +66,20 @@ void main() {
     
     // Main loop
     while (1) {
+        // Gets a snapshot of the inputs to prevent such issues as in bug #24
+        int mem[5];
+        mem[0] = bSTART;
+        mem[1] = iCAMTOP;
+        mem[2] = iCAMBTM;
+        mem[3] = iDISTCRIT;
+        mem[4] = iDISTOK;
+        
         // Distance checks
         // If obstacle is "FAR AWAY", we continue forward
-        if (obstacleDistanceIsFaraway()) {
+        if (obstacleDistanceIsFaraway(mem)) {
             moveForwards();
         // If obsacle is close, but not too much, we turns left
-        } else if (obstacleDistanceIsOk()) {
+        } else if (obstacleDistanceIsOk(mem)) {
             moveTurnsLeft();
         // If obstacle is too close, we stops motors and stops the program
         } else {

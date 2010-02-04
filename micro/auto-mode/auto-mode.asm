@@ -122,11 +122,31 @@ _moveTurnsLeft:
 
 _obstacleDistanceIsFaraway:
 
-;obstacle.h,29 :: 		int obstacleDistanceIsFaraway(void) {
-;obstacle.h,33 :: 		return (!iDISTCRIT && !iDISTOK);
-	BTFSC      PORTB+0, 2
+;obstacle.h,33 :: 		int obstacleDistanceIsFaraway(int mem[5]) {
+;obstacle.h,37 :: 		return (!mem[iDistCritOffset] && !mem[iDistOkOffset]);
+	MOVLW      6
+	ADDWF      FARG_obstacleDistanceIsFaraway_mem+0, 0
+	MOVWF      FSR
+	MOVF       INDF+0, 0
+	MOVWF      R0+0
+	INCF       FSR, 1
+	MOVF       INDF+0, 0
+	MOVWF      R0+1
+	MOVF       R0+0, 0
+	IORWF      R0+1, 0
+	BTFSS      STATUS+0, 2
 	GOTO       L_obstacleDistanceIsFaraway2
-	BTFSC      PORTB+0, 3
+	MOVLW      8
+	ADDWF      FARG_obstacleDistanceIsFaraway_mem+0, 0
+	MOVWF      FSR
+	MOVF       INDF+0, 0
+	MOVWF      R0+0
+	INCF       FSR, 1
+	MOVF       INDF+0, 0
+	MOVWF      R0+1
+	MOVF       R0+0, 0
+	IORWF      R0+1, 0
+	BTFSS      STATUS+0, 2
 	GOTO       L_obstacleDistanceIsFaraway2
 	MOVLW      1
 	MOVWF      R0+0
@@ -136,17 +156,37 @@ L_obstacleDistanceIsFaraway2:
 L_obstacleDistanceIsFaraway1:
 	MOVLW      0
 	MOVWF      R0+1
-;obstacle.h,39 :: 		}
+;obstacle.h,43 :: 		}
 	RETURN
 ; end of _obstacleDistanceIsFaraway
 
 _obstacleDistanceIsOk:
 
-;obstacle.h,46 :: 		int obstacleDistanceIsOk(void) {
-;obstacle.h,50 :: 		return (!iDISTCRIT && iDISTOK);
-	BTFSC      PORTB+0, 2
+;obstacle.h,50 :: 		int obstacleDistanceIsOk(int mem[5]) {
+;obstacle.h,54 :: 		return (!mem[iDistCritOffset] && mem[iDistOkOffset]);
+	MOVLW      6
+	ADDWF      FARG_obstacleDistanceIsOk_mem+0, 0
+	MOVWF      FSR
+	MOVF       INDF+0, 0
+	MOVWF      R0+0
+	INCF       FSR, 1
+	MOVF       INDF+0, 0
+	MOVWF      R0+1
+	MOVF       R0+0, 0
+	IORWF      R0+1, 0
+	BTFSS      STATUS+0, 2
 	GOTO       L_obstacleDistanceIsOk5
-	BTFSS      PORTB+0, 3
+	MOVLW      8
+	ADDWF      FARG_obstacleDistanceIsOk_mem+0, 0
+	MOVWF      FSR
+	MOVF       INDF+0, 0
+	MOVWF      R0+0
+	INCF       FSR, 1
+	MOVF       INDF+0, 0
+	MOVWF      R0+1
+	MOVF       R0+0, 0
+	IORWF      R0+1, 0
+	BTFSC      STATUS+0, 2
 	GOTO       L_obstacleDistanceIsOk5
 	MOVLW      1
 	MOVWF      R0+0
@@ -156,27 +196,32 @@ L_obstacleDistanceIsOk5:
 L_obstacleDistanceIsOk4:
 	MOVLW      0
 	MOVWF      R0+1
-;obstacle.h,56 :: 		}
+;obstacle.h,60 :: 		}
 	RETURN
 ; end of _obstacleDistanceIsOk
 
 _obstacleDistanceIsCritical:
 
-;obstacle.h,63 :: 		int obstacleDistanceIsCritical(void) {
-;obstacle.h,67 :: 		return (iDISTCRIT);
-	MOVLW      0
-	BTFSC      PORTB+0, 2
-	MOVLW      1
+;obstacle.h,67 :: 		int obstacleDistanceIsCritical(int mem[5]) {
+;obstacle.h,71 :: 		return (mem[iDistCritOffset]);
+	MOVLW      6
+	ADDWF      FARG_obstacleDistanceIsCritical_mem+0, 0
+	MOVWF      FSR
+	MOVF       INDF+0, 0
 	MOVWF      R0+0
-	CLRF       R0+1
-;obstacle.h,73 :: 		}
+	INCF       FSR, 1
+	MOVF       INDF+0, 0
+	MOVWF      R0+1
+;obstacle.h,77 :: 		}
 	RETURN
 ; end of _obstacleDistanceIsCritical
 
 _obstacleGetDistance:
 
-;obstacle.h,80 :: 		int obstacleGetDistance(void) {
-;obstacle.h,86 :: 		if (obstacleDistanceIsFaraway())        return ObstacleFarawayMetric;
+;obstacle.h,84 :: 		int obstacleGetDistance(int mem[5]) {
+;obstacle.h,90 :: 		if (obstacleDistanceIsFaraway(mem))     return ObstacleFarawayMetric;
+	MOVF       FARG_obstacleGetDistance_mem+0, 0
+	MOVWF      FARG_obstacleDistanceIsFaraway_mem+0
 	CALL       _obstacleDistanceIsFaraway+0
 	MOVF       R0+0, 0
 	IORWF      R0+1, 0
@@ -188,7 +233,9 @@ _obstacleGetDistance:
 	MOVWF      R0+1
 	RETURN
 L_obstacleGetDistance8:
-;obstacle.h,87 :: 		else if (obstacleDistanceIsOk())        return ObstacleOkMetric;
+;obstacle.h,91 :: 		else if (obstacleDistanceIsOk(mem))     return ObstacleOkMetric;
+	MOVF       FARG_obstacleGetDistance_mem+0, 0
+	MOVWF      FARG_obstacleDistanceIsOk_mem+0
 	CALL       _obstacleDistanceIsOk+0
 	MOVF       R0+0, 0
 	IORWF      R0+1, 0
@@ -200,24 +247,20 @@ L_obstacleGetDistance8:
 	MOVWF      R0+1
 	RETURN
 L_obstacleGetDistance10:
-;obstacle.h,88 :: 		else                                    return ObstacleCriticalMetric;
+;obstacle.h,92 :: 		else                                    return ObstacleCriticalMetric;
 	MOVLW      20
 	MOVWF      R0+0
 	MOVLW      0
 	MOVWF      R0+1
-;obstacle.h,93 :: 		}
+;obstacle.h,97 :: 		}
 	RETURN
 ; end of _obstacleGetDistance
 
 _main:
 
 ;auto-mode.c,33 :: 		void main() {
-;auto-mode.c,35 :: 		OPTION_REG = 0x87;
-	MOVLW      135
-	MOVWF      OPTION_REG+0
-;auto-mode.c,37 :: 		INTCON = 0xA0;
-	MOVLW      160
-	MOVWF      INTCON+0
+;auto-mode.c,37 :: 		INTCON = 0;
+	CLRF       INTCON+0
 ;auto-mode.c,40 :: 		TRISC = 0;
 	CLRF       TRISC+0
 ;auto-mode.c,41 :: 		PORTC = 0;
@@ -226,7 +269,7 @@ _main:
 	CLRF       TRISD+0
 ;auto-mode.c,43 :: 		PORTD = 0;
 	CLRF       PORTD+0
-;auto-mode.c,46 :: 		TRISB = 0b11111111;
+;auto-mode.c,46 :: 		TRISB = 0xff;
 	MOVLW      255
 	MOVWF      TRISB+0
 ;auto-mode.c,49 :: 		dREADY = 1;
@@ -251,43 +294,77 @@ L_main14:
 	BSF        PORTD+0, 1
 ;auto-mode.c,68 :: 		while (1) {
 L_main15:
-;auto-mode.c,71 :: 		if (obstacleDistanceIsFaraway()) {
+;auto-mode.c,71 :: 		mem[0] = bSTART;
+	MOVLW      0
+	BTFSC      PORTB+0, 7
+	MOVLW      1
+	MOVWF      main_mem_L1+0
+	CLRF       main_mem_L1+1
+;auto-mode.c,72 :: 		mem[1] = iCAMTOP;
+	MOVLW      0
+	BTFSC      PORTB+0, 0
+	MOVLW      1
+	MOVWF      main_mem_L1+2
+	CLRF       main_mem_L1+3
+;auto-mode.c,73 :: 		mem[2] = iCAMBTM;
+	MOVLW      0
+	BTFSC      PORTB+0, 1
+	MOVLW      1
+	MOVWF      main_mem_L1+4
+	CLRF       main_mem_L1+5
+;auto-mode.c,74 :: 		mem[3] = iDISTCRIT;
+	MOVLW      0
+	BTFSC      PORTB+0, 2
+	MOVLW      1
+	MOVWF      main_mem_L1+6
+	CLRF       main_mem_L1+7
+;auto-mode.c,75 :: 		mem[4] = iDISTOK;
+	MOVLW      0
+	BTFSC      PORTB+0, 3
+	MOVLW      1
+	MOVWF      main_mem_L1+8
+	CLRF       main_mem_L1+9
+;auto-mode.c,79 :: 		if (obstacleDistanceIsFaraway(mem)) {
+	MOVLW      main_mem_L1+0
+	MOVWF      FARG_obstacleDistanceIsFaraway_mem+0
 	CALL       _obstacleDistanceIsFaraway+0
 	MOVF       R0+0, 0
 	IORWF      R0+1, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main17
-;auto-mode.c,72 :: 		moveForwards();
+;auto-mode.c,80 :: 		moveForwards();
 	CALL       _moveForwards+0
-;auto-mode.c,74 :: 		} else if (obstacleDistanceIsOk()) {
+;auto-mode.c,82 :: 		} else if (obstacleDistanceIsOk(mem)) {
 	GOTO       L_main18
 L_main17:
+	MOVLW      main_mem_L1+0
+	MOVWF      FARG_obstacleDistanceIsOk_mem+0
 	CALL       _obstacleDistanceIsOk+0
 	MOVF       R0+0, 0
 	IORWF      R0+1, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main19
-;auto-mode.c,75 :: 		moveTurnsLeft();
+;auto-mode.c,83 :: 		moveTurnsLeft();
 	CALL       _moveTurnsLeft+0
-;auto-mode.c,77 :: 		} else {
+;auto-mode.c,85 :: 		} else {
 	GOTO       L_main20
 L_main19:
-;auto-mode.c,78 :: 		moveStops();
+;auto-mode.c,86 :: 		moveStops();
 	CALL       _moveStops+0
-;auto-mode.c,79 :: 		break;
+;auto-mode.c,87 :: 		break;
 	GOTO       L_main16
-;auto-mode.c,80 :: 		}
+;auto-mode.c,88 :: 		}
 L_main20:
 L_main18:
-;auto-mode.c,81 :: 		}
+;auto-mode.c,89 :: 		}
 	GOTO       L_main15
 L_main16:
-;auto-mode.c,86 :: 		dRUN = 0;
+;auto-mode.c,94 :: 		dRUN = 0;
 	BCF        PORTD+0, 1
-;auto-mode.c,87 :: 		dERROR = 1;
+;auto-mode.c,95 :: 		dERROR = 1;
 	BSF        PORTD+0, 3
-;auto-mode.c,89 :: 		moveStops();
+;auto-mode.c,97 :: 		moveStops();
 	CALL       _moveStops+0
-;auto-mode.c,90 :: 		}
+;auto-mode.c,98 :: 		}
 	GOTO       $+0
 ; end of _main
