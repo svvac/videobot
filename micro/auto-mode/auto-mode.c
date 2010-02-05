@@ -22,8 +22,11 @@
 // Bounds I/O associations
 #include "inc/io.h"
 
-// Set to "1" if in debug mode
+// Set status of debug mode
 const int DBGMODE = 1;
+
+// Memory freezer
+#include "inc/freeze.h"
 
 // Includes bot's functions
 #include "inc/move.h"

@@ -196,6 +196,7 @@ f
 ferr
 ferr_bit
 fixsign32
+freezeinputs
 fsr
 fsrptr
 gcen
@@ -501,6 +502,7 @@ sub_32x32_fp
 swap
 sync
 sync_bit
+syncoutputs
 t0cs
 t0cs_bit
 t0ie

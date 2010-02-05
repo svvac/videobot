@@ -258,73 +258,73 @@ L_obstacleGetDistance10:
 
 _main:
 
-;auto-mode.c,33 :: 		void main() {
-;auto-mode.c,37 :: 		INTCON = 0;
+;auto-mode.c,36 :: 		void main() {
+;auto-mode.c,40 :: 		INTCON = 0;
 	CLRF       INTCON+0
-;auto-mode.c,40 :: 		TRISC = 0;
+;auto-mode.c,43 :: 		TRISC = 0;
 	CLRF       TRISC+0
-;auto-mode.c,41 :: 		PORTC = 0;
+;auto-mode.c,44 :: 		PORTC = 0;
 	CLRF       PORTC+0
-;auto-mode.c,42 :: 		TRISD = 0;
+;auto-mode.c,45 :: 		TRISD = 0;
 	CLRF       TRISD+0
-;auto-mode.c,43 :: 		PORTD = 0;
+;auto-mode.c,46 :: 		PORTD = 0;
 	CLRF       PORTD+0
-;auto-mode.c,46 :: 		TRISB = 0xff;
+;auto-mode.c,49 :: 		TRISB = 0xff;
 	MOVLW      255
 	MOVWF      TRISB+0
-;auto-mode.c,49 :: 		dREADY = 1;
+;auto-mode.c,52 :: 		dREADY = 1;
 	BSF        PORTD+0, 0
-;auto-mode.c,51 :: 		dWAITING = 1;
+;auto-mode.c,54 :: 		dWAITING = 1;
 	BSF        PORTD+0, 2
-;auto-mode.c,54 :: 		if (DBGMODE)    dDEBUG = 1;
+;auto-mode.c,57 :: 		if (DBGMODE)    dDEBUG = 1;
 	BSF        PORTD+0, 4
-;auto-mode.c,57 :: 		moveStops();
+;auto-mode.c,60 :: 		moveStops();
 	CALL       _moveStops+0
-;auto-mode.c,60 :: 		while (!bSTART);
+;auto-mode.c,63 :: 		while (!bSTART);
 L_main13:
 	BTFSC      PORTB+0, 7
 	GOTO       L_main14
 	GOTO       L_main13
 L_main14:
-;auto-mode.c,62 :: 		dREADY = 0;
+;auto-mode.c,65 :: 		dREADY = 0;
 	BCF        PORTD+0, 0
-;auto-mode.c,63 :: 		dWAITING = 0;
+;auto-mode.c,66 :: 		dWAITING = 0;
 	BCF        PORTD+0, 2
-;auto-mode.c,65 :: 		dRUN = 1;
+;auto-mode.c,68 :: 		dRUN = 1;
 	BSF        PORTD+0, 1
-;auto-mode.c,68 :: 		while (1) {
+;auto-mode.c,71 :: 		while (1) {
 L_main15:
-;auto-mode.c,71 :: 		mem[0] = bSTART;
+;auto-mode.c,74 :: 		mem[0] = bSTART;
 	MOVLW      0
 	BTFSC      PORTB+0, 7
 	MOVLW      1
 	MOVWF      main_mem_L1+0
 	CLRF       main_mem_L1+1
-;auto-mode.c,72 :: 		mem[1] = iCAMTOP;
+;auto-mode.c,75 :: 		mem[1] = iCAMTOP;
 	MOVLW      0
 	BTFSC      PORTB+0, 0
 	MOVLW      1
 	MOVWF      main_mem_L1+2
 	CLRF       main_mem_L1+3
-;auto-mode.c,73 :: 		mem[2] = iCAMBTM;
+;auto-mode.c,76 :: 		mem[2] = iCAMBTM;
 	MOVLW      0
 	BTFSC      PORTB+0, 1
 	MOVLW      1
 	MOVWF      main_mem_L1+4
 	CLRF       main_mem_L1+5
-;auto-mode.c,74 :: 		mem[3] = iDISTCRIT;
+;auto-mode.c,77 :: 		mem[3] = iDISTCRIT;
 	MOVLW      0
 	BTFSC      PORTB+0, 2
 	MOVLW      1
 	MOVWF      main_mem_L1+6
 	CLRF       main_mem_L1+7
-;auto-mode.c,75 :: 		mem[4] = iDISTOK;
+;auto-mode.c,78 :: 		mem[4] = iDISTOK;
 	MOVLW      0
 	BTFSC      PORTB+0, 3
 	MOVLW      1
 	MOVWF      main_mem_L1+8
 	CLRF       main_mem_L1+9
-;auto-mode.c,79 :: 		if (obstacleDistanceIsFaraway(mem)) {
+;auto-mode.c,82 :: 		if (obstacleDistanceIsFaraway(mem)) {
 	MOVLW      main_mem_L1+0
 	MOVWF      FARG_obstacleDistanceIsFaraway_mem+0
 	CALL       _obstacleDistanceIsFaraway+0
@@ -332,9 +332,9 @@ L_main15:
 	IORWF      R0+1, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main17
-;auto-mode.c,80 :: 		moveForwards();
+;auto-mode.c,83 :: 		moveForwards();
 	CALL       _moveForwards+0
-;auto-mode.c,82 :: 		} else if (obstacleDistanceIsOk(mem)) {
+;auto-mode.c,85 :: 		} else if (obstacleDistanceIsOk(mem)) {
 	GOTO       L_main18
 L_main17:
 	MOVLW      main_mem_L1+0
@@ -344,27 +344,27 @@ L_main17:
 	IORWF      R0+1, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main19
-;auto-mode.c,83 :: 		moveTurnsLeft();
+;auto-mode.c,86 :: 		moveTurnsLeft();
 	CALL       _moveTurnsLeft+0
-;auto-mode.c,85 :: 		} else {
+;auto-mode.c,88 :: 		} else {
 	GOTO       L_main20
 L_main19:
-;auto-mode.c,86 :: 		moveStops();
+;auto-mode.c,89 :: 		moveStops();
 	CALL       _moveStops+0
-;auto-mode.c,87 :: 		break;
+;auto-mode.c,90 :: 		break;
 	GOTO       L_main16
-;auto-mode.c,88 :: 		}
+;auto-mode.c,91 :: 		}
 L_main20:
 L_main18:
-;auto-mode.c,89 :: 		}
+;auto-mode.c,92 :: 		}
 	GOTO       L_main15
 L_main16:
-;auto-mode.c,94 :: 		dRUN = 0;
+;auto-mode.c,97 :: 		dRUN = 0;
 	BCF        PORTD+0, 1
-;auto-mode.c,95 :: 		dERROR = 1;
+;auto-mode.c,98 :: 		dERROR = 1;
 	BSF        PORTD+0, 3
-;auto-mode.c,97 :: 		moveStops();
+;auto-mode.c,100 :: 		moveStops();
 	CALL       _moveStops+0
-;auto-mode.c,98 :: 		}
+;auto-mode.c,101 :: 		}
 	GOTO       $+0
 ; end of _main

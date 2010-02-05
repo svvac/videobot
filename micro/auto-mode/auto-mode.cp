@@ -2,6 +2,37 @@
 #line 1 "s:/videobot/micro/auto-mode/inc/io.h"
 #line 26 "S:/videobot/micro/auto-mode/auto-mode.c"
 const int DBGMODE = 1;
+#line 1 "s:/videobot/micro/auto-mode/inc/freeze.h"
+#line 17 "s:/videobot/micro/auto-mode/inc/freeze.h"
+typedef struct inputs inputs;
+struct inputs {
+ int startButton;
+ int camCeil;
+ int camFloor;
+ int distCritical;
+ int distAcceptable;
+};
+
+typedef struct outputs outputs;
+struct outputs {
+ int delReady;
+ int delRun;
+ int delWaiting;
+ int delError;
+ int delDebug;
+
+ int cameraUpw;
+ int cameraDownw;
+
+ int motorRForw;
+ int motorRBackw;
+ int motorLForw;
+ int motorLBackw;
+};
+
+void freezeInputs(inputs*);
+
+void syncOutputs(outputs*);
 #line 1 "s:/videobot/micro/auto-mode/inc/move.h"
 #line 18 "s:/videobot/micro/auto-mode/inc/move.h"
 void moveMotorRightForwards(void) {
@@ -117,7 +148,7 @@ int obstacleGetDistance(int mem[5]) {
 
 
 }
-#line 33 "S:/videobot/micro/auto-mode/auto-mode.c"
+#line 36 "S:/videobot/micro/auto-mode/auto-mode.c"
 void main() {
 
 
