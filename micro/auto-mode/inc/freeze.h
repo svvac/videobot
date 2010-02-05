@@ -1,7 +1,7 @@
 /*
  * videobot - automatic mode
  * description:  Provide memory freeze functionnalities
- * file: auto-mode.c
+ * file: inc/freeze.h
  *
  * config:
  *   controller:      PIC16F877A (EasyPic 4)
@@ -13,6 +13,9 @@
  * Web: http://swordofpain.hd.free.fr/tracker/projects/videobot
  * GitHub repo: http://github.com/swordofpain/videobot
  */
+
+#ifndef DEF_FREEZE
+#define DEF_FREEZE
 
 typedef struct inputs inputs;
 struct inputs {
@@ -43,3 +46,5 @@ struct outputs {
 void freezeInputs(inputs*);
 
 void syncOutputs(outputs*);
+
+#endif

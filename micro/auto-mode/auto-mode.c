@@ -19,74 +19,80 @@
  * GitHub repo: http://github.com/swordofpain/videobot
  */
 
-// Bounds I/O associations
-#include "inc/io.h"
-
 // Set status of debug mode
-const int DBGMODE = 1;
+#include "inc/debug.h"
 
-// Memory freezer
+// I/O management wrappers
 #include "inc/freeze.h"
 
-// Includes bot's functions
+// Displacement API
 #include "inc/move.h"
+// Obstacle detection API
 #include "inc/obstacle.h"
-//#include "inc/logic.h"
 
 void main() {
-    // TMR0 prescaler. No idea of what this means
-    //OPTION_REG = 0x87;
-    // Allow TMR0 interruptions
-    INTCON = 0;
+    // I/O structures
+    inputs  iMem;
+    outputs oMem = {0};
     
+    // Ports mapping
+    INTCON = 0;
     // Outputs
     TRISC = 0;
     PORTC = 0;
     TRISD = 0;
     PORTD = 0;
-    
     // Input
     TRISB = 0xff;
     
-    // Turns on READY LED
-    dREADY = 1;
-    // Turns on WAITING LED
-    dWAITING = 1;
+    // Cleans ports
+    syncOutputs(&oMem);
+    // Updates inbound
+    freezeInputs(&iMem);
     
+    // Turns on READY LED
+    oMem.delReady = 1;
+    // Turns on WAITING LED
+    oMem.delWaiting = 1;
     // If in debug mode, turns on DEBUG LED
-    if (DBGMODE)    dDEBUG = 1;
+    if (DBGMODE)    oMem.delDebug = 1;
     
     // Stops motors (just in case)
-    moveStops();
+    moveStops(oMem);
+    
+    // Commit on ports
+    syncOutputs(&oMem);
+    
     
     // Wait until user press on start
-    while (!bSTART);
+    while (!iMem.startButton)     freezeInputs(&iMem);
+    
+    
     // Turns off READY and WAITING LEDs
-    dREADY = 0;
-    dWAITING = 0;
+    oMem.delReady = 0;
+    oMem.delWaiting = 0;
     // Turns on RUNNING LED
-    dRUN = 1;
+    oMem.delRun = 1;
+    // Commits
+    syncOutputs(&oMem);
     
     // Main loop
     while (1) {
         // Gets a snapshot of the inputs to prevent such issues as in bug #24
-        int mem[5];
-        mem[0] = bSTART;
-        mem[1] = iCAMTOP;
-        mem[2] = iCAMBTM;
-        mem[3] = iDISTCRIT;
-        mem[4] = iDISTOK;
+        freezeInputs(&iMem);
+        // Commit output changes
+        syncOutputs(&oMem);
         
         // Distance checks
         // If obstacle is "FAR AWAY", we continue forward
-        if (obstacleDistanceIsFaraway(mem)) {
-            moveForwards();
+        if (obstacleDistanceIsFaraway(iMem)) {
+            moveForwards(oMem);
         // If obsacle is close, but not too much, we turns left
-        } else if (obstacleDistanceIsOk(mem)) {
-            moveTurnsLeft();
+        } else if (obstacleDistanceIsOk(iMem)) {
+            moveTurnsLeft(oMem);
         // If obstacle is too close, we stops motors and stops the program
         } else {
-            moveStops();
+            moveStops(oMem);
             break;
         }
     }
@@ -94,9 +100,11 @@ void main() {
     // This is the shutdown program, executed when the infinite loop
     // is broken.
     // We turns off the RUN LED and turns on the ERROR LED
-    dRUN = 0;
-    dERROR = 1;
+    oMem.delRun = 0;
+    oMem.delError = 1;
     // Just in case, we stops the motors.
-    moveStops();
+    moveStops(oMem);
+    // Sync
+    syncOutputs(&oMem);
 }
 

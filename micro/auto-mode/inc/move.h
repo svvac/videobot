@@ -2,7 +2,7 @@
  * videobot - automatic mode
  * description:  Displacement-related functions
  *               (in heavy developpement)
- * file: inc/obstacle.h
+ * file: inc/move.h
  *
  * config:
  *   controller:      PIC16F877A (EasyPic 4)
@@ -15,57 +15,25 @@
  * GitHub repo: http://github.com/swordofpain/videobot
  */
 
-void moveMotorRightForwards(void) {
-    oRMOTORF = 1;
-    oRMOTORB = 0;
-}
+#ifndef DEF_MOVE
+#define DEF_MOVE
 
-void moveMotorRightBackwards(void) {
-    oRMOTORF = 0;
-    oRMOTORB = 1;
-}
+static void moveMotorRightForwards(outputs);
+static void moveMotorRightBackwards(outputs);
+static void moveMotorRightStops(outputs);
 
-void moveMotorRightStops(void) {
-    oRMOTORF = 0;
-    oRMOTORB = 0;
-}
+static void moveMotorLeftBackwards(outputs);
+static void moveMotorLeftForwards(outputs);
+static void moveMotorLeftStops(outputs);
 
-void moveMotorLeftBackwards(void) {
-    oLMOTORF = 0;
-    oLMOTORB = 1;
-}
-void moveMotorLeftForwards(void) {
-    oLMOTORF = 1;
-    oLMOTORB = 0;
-}
+void moveForwards(outputs);
 
-void moveMotorLeftStops(void) {
-    oLMOTORF = 0;
-    oLMOTORB = 0;
-}
+void moveBackwards(outputs);
 
-void moveForwards(void) {
-    moveMotorRightForwards();
-    moveMotorLeftForwards();
-}
+void moveStops(outputs);
 
-void moveBackwards(void) {
-    moveMotorRightBackwards();
-    moveMotorLeftBackwards();
-}
+void moveTurnsRight(outputs);
 
-void moveStops(void) {
-    moveMotorRightStops();
-    moveMotorLeftStops();
-}
+void moveTurnsLeft(outputs);
 
-void moveTurnsRight(void) {
-    moveMotorRightBackwards();
-    moveMotorLeftForwards();
-}
-
-void moveTurnsLeft(void) {
-    moveMotorRightForwards();
-    moveMotorLeftBackwards();
-}
-
+#endif

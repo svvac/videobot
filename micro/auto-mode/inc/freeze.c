@@ -1,7 +1,7 @@
 /*
  * videobot - automatic mode
  * description:  Provide memory freeze functionnalities
- * file: auto-mode.c
+ * file: inc/freeze.c
  *
  * config:
  *   controller:      PIC16F877A (EasyPic 4)

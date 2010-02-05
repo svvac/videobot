@@ -1,6 +1,6 @@
 #line 1 "S:/videobot/micro/auto-mode/inc/freeze.c"
 #line 1 "s:/videobot/micro/auto-mode/inc/freeze.h"
-#line 17 "s:/videobot/micro/auto-mode/inc/freeze.h"
+#line 20 "s:/videobot/micro/auto-mode/inc/freeze.h"
 typedef struct inputs inputs;
 struct inputs {
  int startButton;

@@ -151,7 +151,6 @@ d_a_bit
 d_bit
 data_address
 data_address_bit
-dbgmode
 dc
 dc_bit
 delay_100ms
@@ -222,8 +221,6 @@ ibf_trise_bit
 ibov
 ibov_bit
 ibov_trise_bit
-idistcritoffset
-idistokoffset
 indf
 int2double
 intcon
@@ -240,12 +237,6 @@ longword2double
 main
 movebackwards
 moveforwards
-movemotorleftbackwards
-movemotorleftforwards
-movemotorleftstops
-movemotorrightbackwards
-movemotorrightforwards
-movemotorrightstops
 movestops
 moveturnsleft
 moveturnsright
@@ -289,13 +280,10 @@ nrm4032
 obf
 obf_bit
 obf_trise_bit
-obstaclecriticalmetric
 obstacledistanceiscritical
 obstacledistanceisfaraway
 obstacledistanceisok
-obstaclefarawaymetric
 obstaclegetdistance
-obstacleokmetric
 oerr
 oerr_bit
 option_reg

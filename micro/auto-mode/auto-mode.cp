@@ -1,9 +1,7 @@
 #line 1 "S:/videobot/micro/auto-mode/auto-mode.c"
-#line 1 "s:/videobot/micro/auto-mode/inc/io.h"
-#line 26 "S:/videobot/micro/auto-mode/auto-mode.c"
-const int DBGMODE = 1;
+#line 1 "s:/videobot/micro/auto-mode/inc/debug.h"
 #line 1 "s:/videobot/micro/auto-mode/inc/freeze.h"
-#line 17 "s:/videobot/micro/auto-mode/inc/freeze.h"
+#line 20 "s:/videobot/micro/auto-mode/inc/freeze.h"
 typedef struct inputs inputs;
 struct inputs {
  int startButton;
@@ -34,175 +32,97 @@ void freezeInputs(inputs*);
 
 void syncOutputs(outputs*);
 #line 1 "s:/videobot/micro/auto-mode/inc/move.h"
-#line 18 "s:/videobot/micro/auto-mode/inc/move.h"
-void moveMotorRightForwards(void) {
-  PORTC.F0  = 1;
-  PORTC.F1  = 0;
-}
+#line 21 "s:/videobot/micro/auto-mode/inc/move.h"
+static void moveMotorRightForwards(outputs);
+static void moveMotorRightBackwards(outputs);
+static void moveMotorRightStops(outputs);
 
-void moveMotorRightBackwards(void) {
-  PORTC.F0  = 0;
-  PORTC.F1  = 1;
-}
+static void moveMotorLeftBackwards(outputs);
+static void moveMotorLeftForwards(outputs);
+static void moveMotorLeftStops(outputs);
 
-void moveMotorRightStops(void) {
-  PORTC.F0  = 0;
-  PORTC.F1  = 0;
-}
+void moveForwards(outputs);
 
-void moveMotorLeftBackwards(void) {
-  PORTC.F2  = 0;
-  PORTC.F3  = 1;
-}
-void moveMotorLeftForwards(void) {
-  PORTC.F2  = 1;
-  PORTC.F3  = 0;
-}
+void moveBackwards(outputs);
 
-void moveMotorLeftStops(void) {
-  PORTC.F2  = 0;
-  PORTC.F3  = 0;
-}
+void moveStops(outputs);
 
-void moveForwards(void) {
- moveMotorRightForwards();
- moveMotorLeftForwards();
-}
+void moveTurnsRight(outputs);
 
-void moveBackwards(void) {
- moveMotorRightBackwards();
- moveMotorLeftBackwards();
-}
-
-void moveStops(void) {
- moveMotorRightStops();
- moveMotorLeftStops();
-}
-
-void moveTurnsRight(void) {
- moveMotorRightBackwards();
- moveMotorLeftForwards();
-}
-
-void moveTurnsLeft(void) {
- moveMotorRightForwards();
- moveMotorLeftBackwards();
-}
+void moveTurnsLeft(outputs);
 #line 1 "s:/videobot/micro/auto-mode/inc/obstacle.h"
-#line 19 "s:/videobot/micro/auto-mode/inc/obstacle.h"
-const int ObstacleCriticalMetric = 20;
-const int ObstacleOkMetric = 40;
-const int ObstacleFarawayMetric = 100;
+#line 21 "s:/videobot/micro/auto-mode/inc/obstacle.h"
+int obstacleDistanceIsFaraway(inputs);
 
+int obstacleDistanceIsOk(inputs);
 
-const int iDistOkOffset = 4;
-const int iDistCritOffset = 3;
-#line 33 "s:/videobot/micro/auto-mode/inc/obstacle.h"
-int obstacleDistanceIsFaraway(int mem[5]) {
+int obstacleDistanceIsCritical(inputs);
 
- if (DBGMODE) {
-
- return (!mem[iDistCritOffset] && !mem[iDistOkOffset]);
- }
-
-
-
- return 0;
-}
-#line 50 "s:/videobot/micro/auto-mode/inc/obstacle.h"
-int obstacleDistanceIsOk(int mem[5]) {
-
- if (DBGMODE) {
-
- return (!mem[iDistCritOffset] && mem[iDistOkOffset]);
- }
-
-
-
- return 0;
-}
-#line 67 "s:/videobot/micro/auto-mode/inc/obstacle.h"
-int obstacleDistanceIsCritical(int mem[5]) {
-
- if (DBGMODE) {
-
- return (mem[iDistCritOffset]);
- }
-
-
-
- return 1;
-}
-#line 84 "s:/videobot/micro/auto-mode/inc/obstacle.h"
-int obstacleGetDistance(int mem[5]) {
-
- if (DBGMODE) {
-
-
-
- if (obstacleDistanceIsFaraway(mem)) return ObstacleFarawayMetric;
- else if (obstacleDistanceIsOk(mem)) return ObstacleOkMetric;
- else return ObstacleCriticalMetric;
- }
-
-
-
-}
-#line 36 "S:/videobot/micro/auto-mode/auto-mode.c"
+int obstacleGetDistance(inputs);
+#line 33 "S:/videobot/micro/auto-mode/auto-mode.c"
 void main() {
 
+ inputs iMem;
+ outputs oMem = {0};
 
 
  INTCON = 0;
-
 
  TRISC = 0;
  PORTC = 0;
  TRISD = 0;
  PORTD = 0;
 
-
  TRISB = 0xff;
 
 
-  PORTD.F0  = 1;
+ syncOutputs(&oMem);
 
-  PORTD.F2  = 1;
-
-
- if (DBGMODE)  PORTD.F4  = 1;
+ freezeInputs(&iMem);
 
 
- moveStops();
+ oMem.delReady = 1;
+
+ oMem.delWaiting = 1;
+
+ if ( 1 ) oMem.delDebug = 1;
 
 
- while (! PORTB.F7 );
+ moveStops(oMem);
 
-  PORTD.F0  = 0;
-  PORTD.F2  = 0;
 
-  PORTD.F1  = 1;
+ syncOutputs(&oMem);
+
+
+
+ while (!iMem.startButton) freezeInputs(&iMem);
+
+
+
+ oMem.delReady = 0;
+ oMem.delWaiting = 0;
+
+ oMem.delRun = 1;
+
+ syncOutputs(&oMem);
 
 
  while (1) {
 
- int mem[5];
- mem[0] =  PORTB.F7 ;
- mem[1] =  PORTB.F0 ;
- mem[2] =  PORTB.F1 ;
- mem[3] =  PORTB.F2 ;
- mem[4] =  PORTB.F3 ;
+ freezeInputs(&iMem);
+
+ syncOutputs(&oMem);
 
 
 
- if (obstacleDistanceIsFaraway(mem)) {
- moveForwards();
+ if (obstacleDistanceIsFaraway(iMem)) {
+ moveForwards(oMem);
 
- } else if (obstacleDistanceIsOk(mem)) {
- moveTurnsLeft();
+ } else if (obstacleDistanceIsOk(iMem)) {
+ moveTurnsLeft(oMem);
 
  } else {
- moveStops();
+ moveStops(oMem);
  break;
  }
  }
@@ -210,8 +130,10 @@ void main() {
 
 
 
-  PORTD.F1  = 0;
-  PORTD.F3  = 1;
+ oMem.delRun = 0;
+ oMem.delError = 1;
 
- moveStops();
+ moveStops(oMem);
+
+ syncOutputs(&oMem);
 }
