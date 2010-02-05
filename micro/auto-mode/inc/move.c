@@ -17,14 +17,26 @@
 
 #include "move.h"
 
+int stepperBase = 100;
+
+static int motorSteps(int mod) {
+    static int count = 0;
+    static int step = 0;
+    if (mod > 0) {
+        count = (count + 1) % mod;
+        if (count == 0) {
+            step = (step + 1) % STEPPER_PHASES_NB;
+        }
+    }
+    return step;
+}
+
 static void moveMotorRightForwards(outputs *mem) {
-    mem->motorRForw = 1;
-    mem->motorRBackw = 0;
+    PORTC = stepperPhases[motorSteps(-1)];
 }
 
 static void moveMotorRightBackwards(outputs *mem) {
-    mem->motorRForw = 0;
-    mem->motorRBackw = 1;
+    PORTC = stepperPhases[7 - motorSteps(-1)];
 }
 
 static void moveMotorRightStops(outputs *mem) {
@@ -47,26 +59,31 @@ static void moveMotorLeftStops(outputs *mem) {
 }
 
 void moveForwards(outputs *mem) {
+    motorSteps(stepperBase);
     moveMotorRightForwards(mem);
-    moveMotorLeftForwards(mem);
+    //moveMotorLeftForwards(mem);
 }
 
 void moveBackwards(outputs *mem) {
+    motorSteps(stepperBase);
     moveMotorRightBackwards(mem);
-    moveMotorLeftBackwards(mem);
+    //moveMotorLeftBackwards(mem);
 }
 
 void moveStops(outputs *mem) {
+    motorSteps(stepperBase);
     moveMotorRightStops(mem);
     moveMotorLeftStops(mem);
 }
 
 void moveTurnsRight(outputs *mem) {
+    motorSteps(stepperBase);
     moveMotorRightBackwards(mem);
     moveMotorLeftForwards(mem);
 }
 
 void moveTurnsLeft(outputs *mem) {
+    motorSteps(stepperBase);
     moveMotorRightForwards(mem);
     moveMotorLeftBackwards(mem);
 }

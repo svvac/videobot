@@ -163,10 +163,10 @@ L_main8:
 	IORWF      R0+1, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main9
-;auto-mode.c,92 :: 		moveTurnsLeft(&oMem);
+;auto-mode.c,92 :: 		moveBackwards(&oMem);
 	MOVLW      main_oMem_L0+0
-	MOVWF      FARG_moveTurnsLeft+0
-	CALL       _moveTurnsLeft+0
+	MOVWF      FARG_moveBackwards+0
+	CALL       _moveBackwards+0
 ;auto-mode.c,94 :: 		} else {
 	GOTO       L_main10
 L_main9:

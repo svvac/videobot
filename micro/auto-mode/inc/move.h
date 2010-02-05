@@ -20,6 +20,10 @@
 
 #include "freeze.h"
 
+#define STEPPER_PHASES_NB 8
+
+static const int stepperPhases[STEPPER_PHASES_NB] = {0x20,0x28,0x08,0x88,0x80,0x82,0x02,0x22};
+
 static void moveMotorRightForwards(outputs*);
 static void moveMotorRightBackwards(outputs*);
 static void moveMotorRightStops(outputs*);
@@ -27,6 +31,8 @@ static void moveMotorRightStops(outputs*);
 static void moveMotorLeftBackwards(outputs*);
 static void moveMotorLeftForwards(outputs*);
 static void moveMotorLeftStops(outputs*);
+
+static int motorSteps(int);
 
 void moveForwards(outputs*);
 

@@ -33,7 +33,9 @@ void freezeInputs(inputs*);
 void syncOutputs(outputs*);
 #line 1 "s:/videobot/micro/auto-mode/inc/move.h"
 #line 1 "s:/videobot/micro/auto-mode/inc/freeze.h"
-#line 23 "s:/videobot/micro/auto-mode/inc/move.h"
+#line 25 "s:/videobot/micro/auto-mode/inc/move.h"
+static const int stepperPhases[ 8 ] = {0x20,0x28,0x08,0x88,0x80,0x82,0x02,0x22};
+
 static void moveMotorRightForwards(outputs*);
 static void moveMotorRightBackwards(outputs*);
 static void moveMotorRightStops(outputs*);
@@ -41,6 +43,8 @@ static void moveMotorRightStops(outputs*);
 static void moveMotorLeftBackwards(outputs*);
 static void moveMotorLeftForwards(outputs*);
 static void moveMotorLeftStops(outputs*);
+
+static int motorSteps(int);
 
 void moveForwards(outputs*);
 
@@ -122,7 +126,7 @@ void main() {
  moveForwards(&oMem);
 
  } else if (obstacleDistanceIsOk(iMem)) {
- moveTurnsLeft(&oMem);
+ moveBackwards(&oMem);
 
  } else {
  moveStops(&oMem);

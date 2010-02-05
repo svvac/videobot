@@ -31,7 +31,9 @@ struct outputs {
 void freezeInputs(inputs*);
 
 void syncOutputs(outputs*);
-#line 23 "s:/videobot/micro/auto-mode/inc/move.h"
+#line 25 "s:/videobot/micro/auto-mode/inc/move.h"
+static const int stepperPhases[ 8 ] = {0x20,0x28,0x08,0x88,0x80,0x82,0x02,0x22};
+
 static void moveMotorRightForwards(outputs*);
 static void moveMotorRightBackwards(outputs*);
 static void moveMotorRightStops(outputs*);
@@ -39,6 +41,8 @@ static void moveMotorRightStops(outputs*);
 static void moveMotorLeftBackwards(outputs*);
 static void moveMotorLeftForwards(outputs*);
 static void moveMotorLeftStops(outputs*);
+
+static int motorSteps(int);
 
 void moveForwards(outputs*);
 
@@ -50,14 +54,26 @@ void moveTurnsRight(outputs*);
 
 void moveTurnsLeft(outputs*);
 #line 20 "S:/videobot/micro/auto-mode/inc/move.c"
+int stepperBase = 100;
+
+static int motorSteps(int mod) {
+ static int count = 0;
+ static int step = 0;
+ if (mod > 0) {
+ count = (count + 1) % mod;
+ if (count == 0) {
+ step = (step + 1) %  8 ;
+ }
+ }
+ return step;
+}
+
 static void moveMotorRightForwards(outputs *mem) {
- mem->motorRForw = 1;
- mem->motorRBackw = 0;
+ PORTC = stepperPhases[motorSteps(-1)];
 }
 
 static void moveMotorRightBackwards(outputs *mem) {
- mem->motorRForw = 0;
- mem->motorRBackw = 1;
+ PORTC = stepperPhases[7 - motorSteps(-1)];
 }
 
 static void moveMotorRightStops(outputs *mem) {
@@ -80,26 +96,31 @@ static void moveMotorLeftStops(outputs *mem) {
 }
 
 void moveForwards(outputs *mem) {
+ motorSteps(stepperBase);
  moveMotorRightForwards(mem);
- moveMotorLeftForwards(mem);
+
 }
 
 void moveBackwards(outputs *mem) {
+ motorSteps(stepperBase);
  moveMotorRightBackwards(mem);
- moveMotorLeftBackwards(mem);
+
 }
 
 void moveStops(outputs *mem) {
+ motorSteps(stepperBase);
  moveMotorRightStops(mem);
  moveMotorLeftStops(mem);
 }
 
 void moveTurnsRight(outputs *mem) {
+ motorSteps(stepperBase);
  moveMotorRightBackwards(mem);
  moveMotorLeftForwards(mem);
 }
 
 void moveTurnsLeft(outputs *mem) {
+ motorSteps(stepperBase);
  moveMotorRightForwards(mem);
  moveMotorLeftBackwards(mem);
 }

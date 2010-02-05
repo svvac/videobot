@@ -45,12 +45,5 @@ void syncOutputs(outputs* mem) {
  PORTD.F2 = mem->delWaiting;
  PORTD.F3 = mem->delError;
  PORTD.F4 = mem->delDebug;
-
- PORTC.F4 = mem->cameraUpw;
- PORTC.F5 = mem->cameraDownw;
-
- PORTC.F0 = mem->motorRForw;
- PORTC.F1 = mem->motorRBackw;
- PORTC.F2 = mem->motorLForw;
- PORTC.F3 = mem->motorLBackw;
+#line 41 "S:/videobot/micro/auto-mode/inc/freeze.c"
 }

@@ -89,7 +89,7 @@ void main() {
             moveForwards(&oMem);
         // If obsacle is close, but not too much, we turns left
         } else if (obstacleDistanceIsOk(iMem)) {
-            moveTurnsLeft(&oMem);
+            moveBackwards(&oMem);
         // If obstacle is too close, we stops motors and stops the program
         } else {
             moveStops(&oMem);

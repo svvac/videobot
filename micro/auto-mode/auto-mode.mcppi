@@ -6,7 +6,7 @@ Value=0
 [BUILD_TYPE]
 Value=0
 [ACTIVE_TAB]
-Value=auto-mode.c
+Value=freeze.c
 [USE_EEPROM]
 Value=0
 [EEPROM_DEFINITION]
@@ -22,8 +22,11 @@ Count=0
 [IMAGES]
 Count=0
 [OPENED_FILES]
-Count=1
+Count=4
 File0=auto-mode.c
+File1=inc\move.c
+File2=inc\move.h
+File3=inc\freeze.c
 [OTHER_FILES]
 Count=0
 [SEARCH_PATH]
