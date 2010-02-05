@@ -1,2 +1,7 @@
 *.log
 *.ini
+*.dbg
+*.lst
+*.dct
+*.mcppi_callertable.txt
+*.dlt
