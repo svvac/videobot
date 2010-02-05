@@ -77,7 +77,7 @@ void main() {
     syncOutputs(&oMem);
     
     // Main loop
-    while (1) {
+    do {
         // Gets a snapshot of the inputs to prevent such issues as in bug #24
         freezeInputs(&iMem);
         // Commit output changes
@@ -95,7 +95,7 @@ void main() {
             moveStops(&oMem);
             break;
         }
-    }
+    } while (1);
     
     // This is the shutdown program, executed when the infinite loop
     // is broken.
