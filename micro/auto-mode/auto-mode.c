@@ -58,7 +58,7 @@ void main() {
     if (DBGMODE)    oMem.delDebug = 1;
     
     // Stops motors (just in case)
-    moveStops(oMem);
+    moveStops(&oMem);
     
     // Commit on ports
     syncOutputs(&oMem);
@@ -86,13 +86,13 @@ void main() {
         // Distance checks
         // If obstacle is "FAR AWAY", we continue forward
         if (obstacleDistanceIsFaraway(iMem)) {
-            moveForwards(oMem);
+            moveForwards(&oMem);
         // If obsacle is close, but not too much, we turns left
         } else if (obstacleDistanceIsOk(iMem)) {
-            moveTurnsLeft(oMem);
+            moveTurnsLeft(&oMem);
         // If obstacle is too close, we stops motors and stops the program
         } else {
-            moveStops(oMem);
+            moveStops(&oMem);
             break;
         }
     }
@@ -103,7 +103,7 @@ void main() {
     oMem.delRun = 0;
     oMem.delError = 1;
     // Just in case, we stops the motors.
-    moveStops(oMem);
+    moveStops(&oMem);
     // Sync
     syncOutputs(&oMem);
 }

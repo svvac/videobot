@@ -61,43 +61,25 @@ _main:
 	MOVWF      main_oMem_L0+8
 	MOVLW      0
 	MOVWF      main_oMem_L0+9
-;auto-mode.c,61 :: 		moveStops(oMem);
-	MOVLW      22
-	MOVWF      R3+0
-	MOVLW      FARG_moveStops+0
-	MOVWF      R2+0
+;auto-mode.c,61 :: 		moveStops(&oMem);
 	MOVLW      main_oMem_L0+0
-	MOVWF      R1+0
-L_main1:
-	MOVF       R1+0, 0
-	MOVWF      FSR
-	MOVF       INDF+0, 0
-	MOVWF      R0+0
-	MOVF       R2+0, 0
-	MOVWF      FSR
-	MOVF       R0+0, 0
-	MOVWF      INDF+0
-	INCF       R2+0, 1
-	INCF       R1+0, 1
-	DECF       R3+0, 1
-	BTFSS      STATUS+0, 2
-	GOTO       L_main1
+	MOVWF      FARG_moveStops+0
 	CALL       _moveStops+0
 ;auto-mode.c,64 :: 		syncOutputs(&oMem);
 	MOVLW      main_oMem_L0+0
 	MOVWF      FARG_syncOutputs+0
 	CALL       _syncOutputs+0
 ;auto-mode.c,68 :: 		while (!iMem.startButton)     freezeInputs(&iMem);
-L_main2:
+L_main1:
 	MOVF       main_iMem_L0+0, 0
 	IORWF      main_iMem_L0+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L_main3
+	GOTO       L_main2
 	MOVLW      main_iMem_L0+0
 	MOVWF      FARG_freezeInputs+0
 	CALL       _freezeInputs+0
-	GOTO       L_main2
-L_main3:
+	GOTO       L_main1
+L_main2:
 ;auto-mode.c,72 :: 		oMem.delReady = 0;
 	CLRF       main_oMem_L0+0
 	CLRF       main_oMem_L0+1
@@ -114,7 +96,7 @@ L_main3:
 	MOVWF      FARG_syncOutputs+0
 	CALL       _syncOutputs+0
 ;auto-mode.c,80 :: 		while (1) {
-L_main4:
+L_main3:
 ;auto-mode.c,82 :: 		freezeInputs(&iMem);
 	MOVLW      main_iMem_L0+0
 	MOVWF      FARG_freezeInputs+0
@@ -130,7 +112,7 @@ L_main4:
 	MOVWF      R2+0
 	MOVLW      main_iMem_L0+0
 	MOVWF      R1+0
-L_main6:
+L_main5:
 	MOVF       R1+0, 0
 	MOVWF      FSR
 	MOVF       INDF+0, 0
@@ -143,18 +125,24 @@ L_main6:
 	INCF       R1+0, 1
 	DECF       R3+0, 1
 	BTFSS      STATUS+0, 2
-	GOTO       L_main6
+	GOTO       L_main5
 	CALL       _obstacleDistanceIsFaraway+0
 	MOVF       R0+0, 0
 	IORWF      R0+1, 0
 	BTFSC      STATUS+0, 2
-	GOTO       L_main7
-;auto-mode.c,89 :: 		moveForwards(oMem);
-	MOVLW      22
-	MOVWF      R3+0
-	MOVLW      FARG_moveForwards+0
-	MOVWF      R2+0
+	GOTO       L_main6
+;auto-mode.c,89 :: 		moveForwards(&oMem);
 	MOVLW      main_oMem_L0+0
+	MOVWF      FARG_moveForwards+0
+	CALL       _moveForwards+0
+;auto-mode.c,91 :: 		} else if (obstacleDistanceIsOk(iMem)) {
+	GOTO       L_main7
+L_main6:
+	MOVLW      10
+	MOVWF      R3+0
+	MOVLW      FARG_obstacleDistanceIsOk+0
+	MOVWF      R2+0
+	MOVLW      main_iMem_L0+0
 	MOVWF      R1+0
 L_main8:
 	MOVF       R1+0, 0
@@ -170,90 +158,30 @@ L_main8:
 	DECF       R3+0, 1
 	BTFSS      STATUS+0, 2
 	GOTO       L_main8
-	CALL       _moveForwards+0
-;auto-mode.c,91 :: 		} else if (obstacleDistanceIsOk(iMem)) {
-	GOTO       L_main9
-L_main7:
-	MOVLW      10
-	MOVWF      R3+0
-	MOVLW      FARG_obstacleDistanceIsOk+0
-	MOVWF      R2+0
-	MOVLW      main_iMem_L0+0
-	MOVWF      R1+0
-L_main10:
-	MOVF       R1+0, 0
-	MOVWF      FSR
-	MOVF       INDF+0, 0
-	MOVWF      R0+0
-	MOVF       R2+0, 0
-	MOVWF      FSR
-	MOVF       R0+0, 0
-	MOVWF      INDF+0
-	INCF       R2+0, 1
-	INCF       R1+0, 1
-	DECF       R3+0, 1
-	BTFSS      STATUS+0, 2
-	GOTO       L_main10
 	CALL       _obstacleDistanceIsOk+0
 	MOVF       R0+0, 0
 	IORWF      R0+1, 0
 	BTFSC      STATUS+0, 2
-	GOTO       L_main11
-;auto-mode.c,92 :: 		moveTurnsLeft(oMem);
-	MOVLW      22
-	MOVWF      R3+0
-	MOVLW      FARG_moveTurnsLeft+0
-	MOVWF      R2+0
+	GOTO       L_main9
+;auto-mode.c,92 :: 		moveTurnsLeft(&oMem);
 	MOVLW      main_oMem_L0+0
-	MOVWF      R1+0
-L_main12:
-	MOVF       R1+0, 0
-	MOVWF      FSR
-	MOVF       INDF+0, 0
-	MOVWF      R0+0
-	MOVF       R2+0, 0
-	MOVWF      FSR
-	MOVF       R0+0, 0
-	MOVWF      INDF+0
-	INCF       R2+0, 1
-	INCF       R1+0, 1
-	DECF       R3+0, 1
-	BTFSS      STATUS+0, 2
-	GOTO       L_main12
+	MOVWF      FARG_moveTurnsLeft+0
 	CALL       _moveTurnsLeft+0
 ;auto-mode.c,94 :: 		} else {
-	GOTO       L_main13
-L_main11:
-;auto-mode.c,95 :: 		moveStops(oMem);
-	MOVLW      22
-	MOVWF      R3+0
-	MOVLW      FARG_moveStops+0
-	MOVWF      R2+0
+	GOTO       L_main10
+L_main9:
+;auto-mode.c,95 :: 		moveStops(&oMem);
 	MOVLW      main_oMem_L0+0
-	MOVWF      R1+0
-L_main14:
-	MOVF       R1+0, 0
-	MOVWF      FSR
-	MOVF       INDF+0, 0
-	MOVWF      R0+0
-	MOVF       R2+0, 0
-	MOVWF      FSR
-	MOVF       R0+0, 0
-	MOVWF      INDF+0
-	INCF       R2+0, 1
-	INCF       R1+0, 1
-	DECF       R3+0, 1
-	BTFSS      STATUS+0, 2
-	GOTO       L_main14
+	MOVWF      FARG_moveStops+0
 	CALL       _moveStops+0
 ;auto-mode.c,96 :: 		break;
-	GOTO       L_main5
-;auto-mode.c,97 :: 		}
-L_main13:
-L_main9:
-;auto-mode.c,98 :: 		}
 	GOTO       L_main4
-L_main5:
+;auto-mode.c,97 :: 		}
+L_main10:
+L_main7:
+;auto-mode.c,98 :: 		}
+	GOTO       L_main3
+L_main4:
 ;auto-mode.c,103 :: 		oMem.delRun = 0;
 	CLRF       main_oMem_L0+2
 	CLRF       main_oMem_L0+3
@@ -262,27 +190,9 @@ L_main5:
 	MOVWF      main_oMem_L0+6
 	MOVLW      0
 	MOVWF      main_oMem_L0+7
-;auto-mode.c,106 :: 		moveStops(oMem);
-	MOVLW      22
-	MOVWF      R3+0
-	MOVLW      FARG_moveStops+0
-	MOVWF      R2+0
+;auto-mode.c,106 :: 		moveStops(&oMem);
 	MOVLW      main_oMem_L0+0
-	MOVWF      R1+0
-L_main15:
-	MOVF       R1+0, 0
-	MOVWF      FSR
-	MOVF       INDF+0, 0
-	MOVWF      R0+0
-	MOVF       R2+0, 0
-	MOVWF      FSR
-	MOVF       R0+0, 0
-	MOVWF      INDF+0
-	INCF       R2+0, 1
-	INCF       R1+0, 1
-	DECF       R3+0, 1
-	BTFSS      STATUS+0, 2
-	GOTO       L_main15
+	MOVWF      FARG_moveStops+0
 	CALL       _moveStops+0
 ;auto-mode.c,108 :: 		syncOutputs(&oMem);
 	MOVLW      main_oMem_L0+0

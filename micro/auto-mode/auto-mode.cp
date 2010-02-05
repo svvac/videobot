@@ -32,26 +32,29 @@ void freezeInputs(inputs*);
 
 void syncOutputs(outputs*);
 #line 1 "s:/videobot/micro/auto-mode/inc/move.h"
-#line 21 "s:/videobot/micro/auto-mode/inc/move.h"
-static void moveMotorRightForwards(outputs);
-static void moveMotorRightBackwards(outputs);
-static void moveMotorRightStops(outputs);
+#line 1 "s:/videobot/micro/auto-mode/inc/freeze.h"
+#line 23 "s:/videobot/micro/auto-mode/inc/move.h"
+static void moveMotorRightForwards(outputs*);
+static void moveMotorRightBackwards(outputs*);
+static void moveMotorRightStops(outputs*);
 
-static void moveMotorLeftBackwards(outputs);
-static void moveMotorLeftForwards(outputs);
-static void moveMotorLeftStops(outputs);
+static void moveMotorLeftBackwards(outputs*);
+static void moveMotorLeftForwards(outputs*);
+static void moveMotorLeftStops(outputs*);
 
-void moveForwards(outputs);
+void moveForwards(outputs*);
 
-void moveBackwards(outputs);
+void moveBackwards(outputs*);
 
-void moveStops(outputs);
+void moveStops(outputs*);
 
-void moveTurnsRight(outputs);
+void moveTurnsRight(outputs*);
 
-void moveTurnsLeft(outputs);
+void moveTurnsLeft(outputs*);
 #line 1 "s:/videobot/micro/auto-mode/inc/obstacle.h"
-#line 21 "s:/videobot/micro/auto-mode/inc/obstacle.h"
+#line 1 "s:/videobot/micro/auto-mode/inc/freeze.h"
+#line 1 "s:/videobot/micro/auto-mode/inc/debug.h"
+#line 24 "s:/videobot/micro/auto-mode/inc/obstacle.h"
 int obstacleDistanceIsFaraway(inputs);
 
 int obstacleDistanceIsOk(inputs);
@@ -88,7 +91,7 @@ void main() {
  if ( 1 ) oMem.delDebug = 1;
 
 
- moveStops(oMem);
+ moveStops(&oMem);
 
 
  syncOutputs(&oMem);
@@ -116,13 +119,13 @@ void main() {
 
 
  if (obstacleDistanceIsFaraway(iMem)) {
- moveForwards(oMem);
+ moveForwards(&oMem);
 
  } else if (obstacleDistanceIsOk(iMem)) {
- moveTurnsLeft(oMem);
+ moveTurnsLeft(&oMem);
 
  } else {
- moveStops(oMem);
+ moveStops(&oMem);
  break;
  }
  }
@@ -133,7 +136,7 @@ void main() {
  oMem.delRun = 0;
  oMem.delError = 1;
 
- moveStops(oMem);
+ moveStops(&oMem);
 
  syncOutputs(&oMem);
 }

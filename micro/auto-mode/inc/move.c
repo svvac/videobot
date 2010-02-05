@@ -16,58 +16,57 @@
  */
 
 #include "move.h"
-#include "freeze.h"
 
-static void moveMotorRightForwards(outputs mem) {
-    mem.motorRForw = 1;
-    mem.motorRBackw = 0;
+static void moveMotorRightForwards(outputs *mem) {
+    mem->motorRForw = 1;
+    mem->motorRBackw = 0;
 }
 
-static void moveMotorRightBackwards(outputs mem) {
-    mem.motorRForw = 0;
-    mem.motorRBackw = 1;
+static void moveMotorRightBackwards(outputs *mem) {
+    mem->motorRForw = 0;
+    mem->motorRBackw = 1;
 }
 
-static void moveMotorRightStops(outputs mem) {
-    mem.motorRForw = 0;
-    mem.motorRBackw = 0;
+static void moveMotorRightStops(outputs *mem) {
+    mem->motorRForw = 0;
+    mem->motorRBackw = 0;
 }
 
-static void moveMotorLeftBackwards(outputs mem) {
-    mem.motorLForw = 0;
-    mem.motorLBackw = 1;
+static void moveMotorLeftBackwards(outputs *mem) {
+    mem->motorLForw = 0;
+    mem->motorLBackw = 1;
 }
-static void moveMotorLeftForwards(outputs mem) {
-    mem.motorLForw = 1;
-    mem.motorLBackw = 0;
-}
-
-static void moveMotorLeftStops(outputs mem) {
-    mem.motorLForw = 0;
-    mem.motorLBackw = 0;
+static void moveMotorLeftForwards(outputs *mem) {
+    mem->motorLForw = 1;
+    mem->motorLBackw = 0;
 }
 
-void moveForwards(outputs mem) {
+static void moveMotorLeftStops(outputs *mem) {
+    mem->motorLForw = 0;
+    mem->motorLBackw = 0;
+}
+
+void moveForwards(outputs *mem) {
     moveMotorRightForwards(mem);
     moveMotorLeftForwards(mem);
 }
 
-void moveBackwards(outputs mem) {
+void moveBackwards(outputs *mem) {
     moveMotorRightBackwards(mem);
     moveMotorLeftBackwards(mem);
 }
 
-void moveStops(outputs mem) {
+void moveStops(outputs *mem) {
     moveMotorRightStops(mem);
     moveMotorLeftStops(mem);
 }
 
-void moveTurnsRight(outputs mem) {
+void moveTurnsRight(outputs *mem) {
     moveMotorRightBackwards(mem);
     moveMotorLeftForwards(mem);
 }
 
-void moveTurnsLeft(outputs mem) {
+void moveTurnsLeft(outputs *mem) {
     moveMotorRightForwards(mem);
     moveMotorLeftBackwards(mem);
 }

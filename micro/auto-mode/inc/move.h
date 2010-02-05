@@ -18,22 +18,24 @@
 #ifndef DEF_MOVE
 #define DEF_MOVE
 
-static void moveMotorRightForwards(outputs);
-static void moveMotorRightBackwards(outputs);
-static void moveMotorRightStops(outputs);
+#include "freeze.h"
 
-static void moveMotorLeftBackwards(outputs);
-static void moveMotorLeftForwards(outputs);
-static void moveMotorLeftStops(outputs);
+static void moveMotorRightForwards(outputs*);
+static void moveMotorRightBackwards(outputs*);
+static void moveMotorRightStops(outputs*);
 
-void moveForwards(outputs);
+static void moveMotorLeftBackwards(outputs*);
+static void moveMotorLeftForwards(outputs*);
+static void moveMotorLeftStops(outputs*);
 
-void moveBackwards(outputs);
+void moveForwards(outputs*);
 
-void moveStops(outputs);
+void moveBackwards(outputs*);
 
-void moveTurnsRight(outputs);
+void moveStops(outputs*);
 
-void moveTurnsLeft(outputs);
+void moveTurnsRight(outputs*);
+
+void moveTurnsLeft(outputs*);
 
 #endif

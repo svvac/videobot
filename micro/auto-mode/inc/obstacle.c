@@ -16,8 +16,6 @@
  */
 
 #include "obstacle.h"
-#include "freeze.h"
-#include "debug.h"
 
 int obstacleDistanceIsFaraway(inputs mem) {
     // If in debug mode

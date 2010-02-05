@@ -1,13 +1,5 @@
 #line 1 "S:/videobot/micro/auto-mode/inc/obstacle.c"
 #line 1 "s:/videobot/micro/auto-mode/inc/obstacle.h"
-#line 21 "s:/videobot/micro/auto-mode/inc/obstacle.h"
-int obstacleDistanceIsFaraway(inputs);
-
-int obstacleDistanceIsOk(inputs);
-
-int obstacleDistanceIsCritical(inputs);
-
-int obstacleGetDistance(inputs);
 #line 1 "s:/videobot/micro/auto-mode/inc/freeze.h"
 #line 20 "s:/videobot/micro/auto-mode/inc/freeze.h"
 typedef struct inputs inputs;
@@ -40,7 +32,15 @@ void freezeInputs(inputs*);
 
 void syncOutputs(outputs*);
 #line 1 "s:/videobot/micro/auto-mode/inc/debug.h"
-#line 22 "S:/videobot/micro/auto-mode/inc/obstacle.c"
+#line 24 "s:/videobot/micro/auto-mode/inc/obstacle.h"
+int obstacleDistanceIsFaraway(inputs);
+
+int obstacleDistanceIsOk(inputs);
+
+int obstacleDistanceIsCritical(inputs);
+
+int obstacleGetDistance(inputs);
+#line 20 "S:/videobot/micro/auto-mode/inc/obstacle.c"
 int obstacleDistanceIsFaraway(inputs mem) {
 
  if ( 1 ) {

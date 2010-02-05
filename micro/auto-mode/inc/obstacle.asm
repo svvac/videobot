@@ -1,8 +1,8 @@
 
 _obstacleDistanceIsFaraway:
 
-;obstacle.c,22 :: 		int obstacleDistanceIsFaraway(inputs mem) {
-;obstacle.c,26 :: 		return (!mem.distCritical && !mem.distAcceptable);
+;obstacle.c,20 :: 		int obstacleDistanceIsFaraway(inputs mem) {
+;obstacle.c,24 :: 		return (!mem.distCritical && !mem.distAcceptable);
 	MOVF       FARG_obstacleDistanceIsFaraway_mem+6, 0
 	IORWF      FARG_obstacleDistanceIsFaraway_mem+7, 0
 	BTFSS      STATUS+0, 2
@@ -19,14 +19,14 @@ L_obstacleDistanceIsFaraway2:
 L_obstacleDistanceIsFaraway1:
 	MOVLW      0
 	MOVWF      R0+1
-;obstacle.c,32 :: 		}
+;obstacle.c,30 :: 		}
 	RETURN
 ; end of _obstacleDistanceIsFaraway
 
 _obstacleDistanceIsOk:
 
-;obstacle.c,34 :: 		int obstacleDistanceIsOk(inputs mem) {
-;obstacle.c,38 :: 		return (!mem.distCritical && mem.distAcceptable);
+;obstacle.c,32 :: 		int obstacleDistanceIsOk(inputs mem) {
+;obstacle.c,36 :: 		return (!mem.distCritical && mem.distAcceptable);
 	MOVF       FARG_obstacleDistanceIsOk_mem+6, 0
 	IORWF      FARG_obstacleDistanceIsOk_mem+7, 0
 	BTFSS      STATUS+0, 2
@@ -43,30 +43,30 @@ L_obstacleDistanceIsOk5:
 L_obstacleDistanceIsOk4:
 	MOVLW      0
 	MOVWF      R0+1
-;obstacle.c,44 :: 		}
+;obstacle.c,42 :: 		}
 	RETURN
 ; end of _obstacleDistanceIsOk
 
 _obstacleDistanceIsCritical:
 
-;obstacle.c,46 :: 		int obstacleDistanceIsCritical(inputs mem) {
-;obstacle.c,50 :: 		return (mem.distCritical);
+;obstacle.c,44 :: 		int obstacleDistanceIsCritical(inputs mem) {
+;obstacle.c,48 :: 		return (mem.distCritical);
 	MOVF       FARG_obstacleDistanceIsCritical_mem+6, 0
 	MOVWF      R0+0
 	MOVF       FARG_obstacleDistanceIsCritical_mem+7, 0
 	MOVWF      R0+1
-;obstacle.c,56 :: 		}
+;obstacle.c,54 :: 		}
 	RETURN
 ; end of _obstacleDistanceIsCritical
 
 _obstacleGetDistance:
 
-;obstacle.c,58 :: 		int obstacleGetDistance(inputs mem) {
-;obstacle.c,60 :: 		return -1;
+;obstacle.c,56 :: 		int obstacleGetDistance(inputs mem) {
+;obstacle.c,58 :: 		return -1;
 	MOVLW      255
 	MOVWF      R0+0
 	MOVLW      255
 	MOVWF      R0+1
-;obstacle.c,61 :: 		}
+;obstacle.c,59 :: 		}
 	RETURN
 ; end of _obstacleGetDistance
