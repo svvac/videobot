@@ -20,15 +20,15 @@
  */
 
 // Set status of debug mode
-#include "inc/debug.h"
+#include "wrapper/debug.h"
 
 // I/O management wrappers
-#include "inc/freeze.h"
+#include "wrapper/freeze.h"
 
 // Displacement API
-#include "inc/move.h"
+#include "api/move.h"
 // Obstacle detection API
-#include "inc/obstacle.h"
+#include "api/obstacle.h"
 
 void main() {
     // I/O structures

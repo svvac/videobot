@@ -2,7 +2,7 @@
  * videobot - automatic mode
  * description:  Obstacle-related functions
  *               (in heavy developpement)
- * file: inc/obstacle.h
+ * file: api/obstacle.h
  *
  * config:
  *   controller:      PIC16F877A (EasyPic 4)
@@ -18,8 +18,8 @@
 #ifndef DEF_OBSTACLE
 #define DEF_OBSTACLE
 
-#include "freeze.h"
-#include "debug.h"
+#include "../wrapper/freeze.h"
+#include "../wrapper/debug.h"
 
 int obstacleDistanceIsFaraway(inputs);
 
