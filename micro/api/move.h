@@ -2,7 +2,7 @@
  * videobot - automatic mode
  * description:  Displacement-related functions
  *               (in heavy developpement)
- * file: inc/move.h
+ * file: api/move.h
  *
  * config:
  *   controller:      PIC16F877A (EasyPic 4)
@@ -18,7 +18,7 @@
 #ifndef DEF_MOVE
 #define DEF_MOVE
 
-#include "freeze.h"
+#include "../wrapper/freeze.h"
 
 #define STEPPER_PHASES_NB 8
 

@@ -2,7 +2,7 @@
  * videobot - automatic mode
  * description:  Displacement-related functions
  *               (in heavy developpement)
- * file: inc/move.c
+ * file: api/move.c
  *
  * config:
  *   controller:      PIC16F877A (EasyPic 4)

@@ -2,7 +2,7 @@
  * videobot - automatic mode
  * description:  Obstacle-related functions
  *               (in heavy developpement)
- * file: inc/obstacle.c
+ * file: api/obstacle.c
  *
  * config:
  *   controller:      PIC16F877A (EasyPic 4)
