@@ -5,3 +5,8 @@
 *.dct
 *.mcppi_callertable.txt
 *.dlt
+*.asm
+*.cp
+*.mcl
+*.user.dic
+*.hex
