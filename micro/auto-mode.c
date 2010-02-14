@@ -34,25 +34,24 @@
 void main() {
     // Ports
     port    input, output, states;
-    inputs  iMem;
-    outputs oMem;
+    inputs  iMem = {&input, 0};
+    outputs oMem = {&states, &output, 0};
 
     portInit(&input,    &PORTB,     &TRISB);
     portSetFreezed(&input);
     portSetInput(&input);
-    portBlank(&input);
 
     portInit(&output,   &PORTC,     &TRISC);
     portSetFreezed(&output);
     portSetOutput(&output);
+    portBlank(&output);
+    portSync(&output);
 
     portInit(&states,   &PORTD,     &TRISD);
     portSetLive(&states);
     portSetOutput(&states);
-
-    iMem.device  = &input;
-    oMem.devicea = &states;
-    oMem.deviceb = &output;
+    portBlank(&states);
+    portSync(&states);
 
     // Cleans ports
     syncOutputs(&oMem);
