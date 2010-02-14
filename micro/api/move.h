@@ -19,6 +19,7 @@
 #define DEF_MOVE
 
 #include "../wrapper/io.h"
+#include "../wrapper/port.h"
 
 #define STEPPER_PHASES_NB 8
 

@@ -32,11 +32,11 @@ static int motorSteps(int mod) {
 }
 
 static void moveMotorRightForwards(outputs *mem) {
-    PORTC = stepperPhases[motorSteps(-1)];
+    portSetRaw(mem->deviceb, stepperPhases[motorSteps(-1)]);
 }
 
 static void moveMotorRightBackwards(outputs *mem) {
-    PORTC = stepperPhases[7 - motorSteps(-1)];
+    portSetRaw(mem->deviceb, stepperPhases[7 - motorSteps(-1)]);
 }
 
 static void moveMotorRightStops(outputs *mem) {
