@@ -14,28 +14,33 @@
  * GitHub repo: http://github.com/swordofpain/videobot
  */
 
-#include "freeze.h"
+#include "io.h"
 
 void freezeInputs(inputs *mem) {
-    mem->startButton        = PORTB.F7;
-    mem->camCeil            = PORTB.F0;
-    mem->camFloor           = PORTB.F1;
-    mem->distCritical       = PORTB.F2;
-    mem->distAcceptable     = PORTB.F3;
+    portSync(mem->device);
+
+    mem->startButton        = mem->device->B[7];
+    mem->camCeil            = mem->device->B[0];
+    mem->camFloor           = mem->device->B[1];
+    mem->distCritical       = mem->device->B[2];
+    mem->distAcceptable     = mem->device->B[3];
 }
 
 void syncOutputs(outputs* mem) {
-    PORTD.F0                = mem->delReady;
-    PORTD.F1                = mem->delRun;
-    PORTD.F2                = mem->delWaiting;
-    PORTD.F3                = mem->delError;
-    PORTD.F4                = mem->delDebug;
+    mem->devicea->B[0]      = mem->delReady;
+    mem->devicea->B[1]      = mem->delRun;
+    mem->devicea->B[2]      = mem->delWaiting;
+    mem->devicea->B[3]      = mem->delError;
+    mem->devicea->B[4]      = mem->delDebug;
 
-    /*PORTC.F4                = mem->cameraUpw;
-    PORTC.F5                = mem->cameraDownw;
+    /*mem->deviceb->B[4]      = mem->cameraUpw;
+    mem->deviceb->B[5]      = mem->cameraDownw;
 
-    PORTC.F0                = mem->motorRForw;
-    PORTC.F1                = mem->motorRBackw;
-    PORTC.F2                = mem->motorLForw;
-    PORTC.F3                = mem->motorLBackw;*/
+    mem->deviceb->B[0]      = mem->motorRForw;
+    mem->deviceb->B[1]      = mem->motorRBackw;
+    mem->deviceb->B[2]      = mem->motorLForw;
+    mem->deviceb->B[3]      = mem->motorLBackw;*/
+
+    portSync(mem->devicea);
+    portSync(mem->deviceb);
 }
