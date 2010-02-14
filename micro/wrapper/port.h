@@ -50,7 +50,7 @@ void portSyncCond(port*);
 void portGetByte(port*, int);
 void portSetByte(port*, int, short);
 void portSetRaw(port*, int);
-void portGetRaw(port*);
+int portGetRaw(port*);
 
 void portBlank(port*);
 
