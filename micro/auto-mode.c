@@ -24,6 +24,7 @@
 
 // I/O management wrappers
 #include "wrapper/freeze.h"
+#include "wrapper/port.h"
 
 // Displacement API
 #include "api/move.h"
@@ -34,40 +35,52 @@ void main() {
     // I/O structures
     inputs  iMem;
     outputs oMem = {0};
-    
-    // Ports mapping
-    INTCON = 0;
-    // Outputs
-    TRISC = 0;
-    PORTC = 0;
-    TRISD = 0;
-    PORTD = 0;
-    // Input
-    TRISB = 0xff;
-    
+
+    // Ports
+    port    input, output, states;
+
+    portInit(&input,    &PORTB,     &TRISB);
+    portSetFreezed(&input);
+    portSetInput(&input);
+    portBlank(&input);
+
+    portInit(&output,   &PORTC,     &TRISC);
+    portSetFreezed(&output);
+    portSetOutput(&output);
+
+    portInit(&states,   &PORTD,     &TRISD);
+    portSetLive(&states);
+    portSetOutput(&states);
+
     // Cleans ports
-    syncOutputs(&oMem);
+    //syncOutputs(&oMem);
     // Updates inbound
-    freezeInputs(&iMem);
-    
+    //freezeInputs(&iMem);
+
+    portSetRaw(&states, 0b01010101);
+    portSetRaw(&output, 0b10101010);
+    portSync(&output);
+
+    return;
+
     // Turns on READY LED
     oMem.delReady = 1;
     // Turns on WAITING LED
     oMem.delWaiting = 1;
     // If in debug mode, turns on DEBUG LED
     if (DBGMODE)    oMem.delDebug = 1;
-    
+
     // Stops motors (just in case)
     moveStops(&oMem);
-    
+
     // Commit on ports
     syncOutputs(&oMem);
-    
-    
+
+
     // Wait until user press on start
     while (!iMem.startButton)     freezeInputs(&iMem);
-    
-    
+
+
     // Turns off READY and WAITING LEDs
     oMem.delReady = 0;
     oMem.delWaiting = 0;
@@ -75,14 +88,14 @@ void main() {
     oMem.delRun = 1;
     // Commits
     syncOutputs(&oMem);
-    
+
     // Main loop
     do {
         // Gets a snapshot of the inputs to prevent such issues as in bug #24
         freezeInputs(&iMem);
         // Commit output changes
         syncOutputs(&oMem);
-        
+
         // Distance checks
         // If obstacle is "FAR AWAY", we continue forward
         if (obstacleDistanceIsFaraway(iMem)) {
@@ -96,7 +109,7 @@ void main() {
             break;
         }
     } while (1);
-    
+
     // This is the shutdown program, executed when the infinite loop
     // is broken.
     // We turns off the RUN LED and turns on the ERROR LED
@@ -107,4 +120,3 @@ void main() {
     // Sync
     syncOutputs(&oMem);
 }
-
