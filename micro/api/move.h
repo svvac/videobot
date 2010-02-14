@@ -18,7 +18,7 @@
 #ifndef DEF_MOVE
 #define DEF_MOVE
 
-#include "../wrapper/freeze.h"
+#include "../wrapper/io.h"
 
 #define STEPPER_PHASES_NB 8
 

@@ -23,8 +23,8 @@
 #include "wrapper/debug.h"
 
 // I/O management wrappers
-#include "wrapper/freeze.h"
 #include "wrapper/port.h"
+#include "wrapper/io.h"
 
 // Displacement API
 #include "api/move.h"
@@ -32,12 +32,10 @@
 #include "api/obstacle.h"
 
 void main() {
-    // I/O structures
-    inputs  iMem;
-    outputs oMem = {0};
-
     // Ports
     port    input, output, states;
+    inputs  iMem;
+    outputs oMem;
 
     portInit(&input,    &PORTB,     &TRISB);
     portSetFreezed(&input);
@@ -52,16 +50,14 @@ void main() {
     portSetLive(&states);
     portSetOutput(&states);
 
+    iMem.device  = &input;
+    oMem.devicea = &states;
+    oMem.deviceb = &output;
+
     // Cleans ports
-    //syncOutputs(&oMem);
+    syncOutputs(&oMem);
     // Updates inbound
-    //freezeInputs(&iMem);
-
-    portSetRaw(&states, 0b01010101);
-    portSetRaw(&output, 0b10101010);
-    portSync(&output);
-
-    return;
+    freezeInputs(&iMem);
 
     // Turns on READY LED
     oMem.delReady = 1;

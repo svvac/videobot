@@ -18,7 +18,7 @@
 #ifndef DEF_OBSTACLE
 #define DEF_OBSTACLE
 
-#include "../wrapper/freeze.h"
+#include "../wrapper/io.h"
 #include "../wrapper/debug.h"
 
 int obstacleDistanceIsFaraway(inputs);

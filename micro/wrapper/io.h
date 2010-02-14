@@ -1,7 +1,7 @@
 /*
  * videobot - automatic mode
  * description:  Provide memory freeze functionnalities
- * file: wrapper/freeze.h
+ * file: wrapper/io.h
  *
  * config:
  *   controller:      PIC16F877A (EasyPic 4)
@@ -14,33 +14,40 @@
  * GitHub repo: http://github.com/swordofpain/videobot
  */
 
-#ifndef DEF_FREEZE
-#define DEF_FREEZE
+#ifndef DEF_IO
+#define DEF_IO
+
+#include "port.h"
 
 typedef struct inputs inputs;
 struct inputs {
-    int startButton;
-    int camCeil;
-    int camFloor;
-    int distCritical;
-    int distAcceptable;
+    port *device;
+
+    short startButton;
+    short camCeil;
+    short camFloor;
+    short distCritical;
+    short distAcceptable;
 };
 
 typedef struct outputs outputs;
 struct outputs {
-    int delReady;
-    int delRun;
-    int delWaiting;
-    int delError;
-    int delDebug;
-    
-    int cameraUpw;
-    int cameraDownw;
-    
-    int motorRForw;
-    int motorRBackw;
-    int motorLForw;
-    int motorLBackw;
+    port *devicea;
+    port *deviceb;
+
+    short delReady;
+    short delRun;
+    short delWaiting;
+    short delError;
+    short delDebug;
+
+    short cameraUpw;
+    short cameraDownw;
+
+    short motorRForw;
+    short motorRBackw;
+    short motorLForw;
+    short motorLBackw;
 };
 
 void freezeInputs(inputs*);
