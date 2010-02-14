@@ -32,11 +32,17 @@ static int motorSteps(int mod) {
 }
 
 static void moveMotorRightForwards(outputs *mem) {
-    portSetRaw(mem->deviceb, stepperPhases[motorSteps(-1)]);
+    int state = 0;
+    state = portGetRaw(mem->deviceb) & 0xf0;
+    state += stepperPhases[motorSteps(-1)];
+    portSetRaw(mem->deviceb, state);
 }
 
 static void moveMotorRightBackwards(outputs *mem) {
-    portSetRaw(mem->deviceb, stepperPhases[7 - motorSteps(-1)]);
+    int state = 0;
+    state = portGetRaw(mem->deviceb) & 0xf0;
+    state += stepperPhases[STEPPER_PHASES_NB - 1 - motorSteps(-1)];
+    portSetRaw(mem->deviceb, state);
 }
 
 static void moveMotorRightStops(outputs *mem) {
@@ -45,12 +51,16 @@ static void moveMotorRightStops(outputs *mem) {
 }
 
 static void moveMotorLeftBackwards(outputs *mem) {
-    mem->motorLForw = 0;
-    mem->motorLBackw = 1;
+    int state = 0;
+    state = portGetRaw(mem->deviceb) & 0x0f;
+    state += stepperPhases[STEPPER_PHASES_NB - 1 - motorSteps(-1)] * 0x10;
+    portSetRaw(mem->deviceb, state);
 }
 static void moveMotorLeftForwards(outputs *mem) {
-    mem->motorLForw = 1;
-    mem->motorLBackw = 0;
+    int state = 0;
+    state = portGetRaw(mem->deviceb) & 0x0f;
+    state += stepperPhases[motorSteps(-1)] * 0x10;
+    portSetRaw(mem->deviceb, state);
 }
 
 static void moveMotorLeftStops(outputs *mem) {
@@ -61,13 +71,13 @@ static void moveMotorLeftStops(outputs *mem) {
 void moveForwards(outputs *mem) {
     motorSteps(stepperBase);
     moveMotorRightForwards(mem);
-    //moveMotorLeftForwards(mem);
+    moveMotorLeftForwards(mem);
 }
 
 void moveBackwards(outputs *mem) {
     motorSteps(stepperBase);
     moveMotorRightBackwards(mem);
-    //moveMotorLeftBackwards(mem);
+    moveMotorLeftBackwards(mem);
 }
 
 void moveStops(outputs *mem) {
