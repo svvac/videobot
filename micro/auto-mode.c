@@ -33,19 +33,19 @@
 
 void main() {
     // Ports
-    port    input, output, states;
+    port    input, motors, states;
     inputs  iMem = {&input, 0};
-    outputs oMem = {&states, &output, 0};
+    outputs oMem = {&states, &motors, 0};
 
     portInit(&input,    &PORTB,     &TRISB);
     portSetFreezed(&input);
     portSetInput(&input);
 
-    portInit(&output,   &PORTC,     &TRISC);
-    portSetFreezed(&output);
-    portSetOutput(&output);
-    portBlank(&output);
-    portSync(&output);
+    portInit(&motors,   &PORTC,     &TRISC);
+    portSetFreezed(&motors);
+    portSetOutput(&motors);
+    portBlank(&motors);
+    portSync(&motors);
 
     portInit(&states,   &PORTD,     &TRISD);
     portSetLive(&states);
