@@ -6,7 +6,7 @@ Value=0
 [BUILD_TYPE]
 Value=0
 [ACTIVE_TAB]
-Value=io.c
+Value=auto-mode.c
 [USE_EEPROM]
 Value=0
 [EEPROM_DEFINITION]
@@ -50,4 +50,5 @@ File4=S:\videobot\micro\wrapper\io.h
 [PLDS]
 Count=0
 [Useses]
-Count=0
+Count=1
+File0=ADC
