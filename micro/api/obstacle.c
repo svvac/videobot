@@ -28,11 +28,11 @@ void obstacleInitAnalogInput(void) {
     TRISA  = 0xff;
 }
 
-short obstacleDistanceIsFaraway(inputs mem) {
+short obstacleDistanceIsFaraway(inputs *mem) {
     // If in debug mode
     if (DBGMODE) {
         // Returns true *only* if iDISTFAW == iDISTOK == 0
-        return (!mem.distCritical && !mem.distAcceptable);
+        return (!mem->distCritical && !mem->distAcceptable);
     }
 
     // If in normal mode
@@ -40,11 +40,11 @@ short obstacleDistanceIsFaraway(inputs mem) {
     return 0;
 }
 
-short obstacleDistanceIsOk(inputs mem) {
+short obstacleDistanceIsOk(inputs *mem) {
     // If in debug mode
     if (DBGMODE) {
         // Returns true if iDISTCRIT == 0 and iDISTOK == 1
-        return (!mem.distCritical && mem.distAcceptable);
+        return (!mem->distCritical && mem->distAcceptable);
     }
 
     // If in normal mode
@@ -52,11 +52,11 @@ short obstacleDistanceIsOk(inputs mem) {
     return 0;
 }
 
-short obstacleDistanceIsCritical(inputs mem) {
+short obstacleDistanceIsCritical(inputs *mem) {
     // If in debug mode
     if (DBGMODE) {
         // Returns true if iDISTCRIT == 1
-        return (mem.distCritical);
+        return (mem->distCritical);
     }
 
     // If in normal mode
@@ -64,7 +64,7 @@ short obstacleDistanceIsCritical(inputs mem) {
     return 1;
 }
 
-int obstacleGetDistance(inputs mem) {
+int obstacleGetDistance(inputs *mem) {
     // Unimplemented
     return -1;
 }

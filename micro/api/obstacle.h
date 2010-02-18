@@ -23,12 +23,12 @@
 
 void obstacleInitAnalogInput(void);
 
-short obstacleDistanceIsFaraway(inputs);
+short obstacleDistanceIsFaraway(inputs*);
 
-short obstacleDistanceIsOk(inputs);
+short obstacleDistanceIsOk(inputs*);
 
-short obstacleDistanceIsCritical(inputs);
+short obstacleDistanceIsCritical(inputs*);
 
-int obstacleGetDistance(inputs);
+int obstacleGetDistance(inputs*);
 
 #endif
