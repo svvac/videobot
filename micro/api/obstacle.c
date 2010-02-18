@@ -17,13 +17,24 @@
 
 #include "obstacle.h"
 
+void obstacleInitAnalogInput(void) {
+    // Okay this is ugly, we don't use the port wrapper. But
+    // we really did NOT need it at all. It's like using a
+    // bazooka to kill a fly in this very case.
+
+    // Configure analog channels and Vref (from ADC samples)
+    ADCON1 = 0x80;
+    // Configure Port A as input
+    TRISA  = 0xff;
+}
+
 int obstacleDistanceIsFaraway(inputs mem) {
     // If in debug mode
     if (DBGMODE) {
         // Returns true *only* if iDISTFAW == iDISTOK == 0
         return (!mem.distCritical && !mem.distAcceptable);
     }
-    
+
     // If in normal mode
     // (Unimplemented)
     return 0;
@@ -35,7 +46,7 @@ int obstacleDistanceIsOk(inputs mem) {
         // Returns true if iDISTCRIT == 0 and iDISTOK == 1
         return (!mem.distCritical && mem.distAcceptable);
     }
-    
+
     // If in normal mode
     // Unimplemented
     return 0;
@@ -47,7 +58,7 @@ int obstacleDistanceIsCritical(inputs mem) {
         // Returns true if iDISTCRIT == 1
         return (mem.distCritical);
     }
-    
+
     // If in normal mode
     // Unimplemented
     return 1;

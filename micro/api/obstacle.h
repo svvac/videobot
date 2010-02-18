@@ -21,6 +21,8 @@
 #include "../wrapper/io.h"
 #include "../wrapper/debug.h"
 
+void obstacleInitAnalogInput(void);
+
 int obstacleDistanceIsFaraway(inputs);
 
 int obstacleDistanceIsOk(inputs);

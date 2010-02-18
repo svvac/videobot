@@ -53,6 +53,9 @@ void main() {
     portBlank(&output);
     portSync(&output);
 
+    // Init ADC for obstacle detection
+    obstacleInitAnalogInput();
+
     // Cleans ports
     syncOutputs(&oMem);
     // Updates inbound
