@@ -28,7 +28,7 @@ void obstacleInitAnalogInput(void) {
     TRISA  = 0xff;
 }
 
-int obstacleDistanceIsFaraway(inputs mem) {
+short obstacleDistanceIsFaraway(inputs mem) {
     // If in debug mode
     if (DBGMODE) {
         // Returns true *only* if iDISTFAW == iDISTOK == 0
@@ -40,7 +40,7 @@ int obstacleDistanceIsFaraway(inputs mem) {
     return 0;
 }
 
-int obstacleDistanceIsOk(inputs mem) {
+short obstacleDistanceIsOk(inputs mem) {
     // If in debug mode
     if (DBGMODE) {
         // Returns true if iDISTCRIT == 0 and iDISTOK == 1
@@ -52,7 +52,7 @@ int obstacleDistanceIsOk(inputs mem) {
     return 0;
 }
 
-int obstacleDistanceIsCritical(inputs mem) {
+short obstacleDistanceIsCritical(inputs mem) {
     // If in debug mode
     if (DBGMODE) {
         // Returns true if iDISTCRIT == 1
