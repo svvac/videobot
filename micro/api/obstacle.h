@@ -21,6 +21,8 @@
 #include "../wrapper/io.h"
 #include "../wrapper/debug.h"
 
+#define OBSTACLE_CHANNEL 2
+
 void obstacleInitAnalogInput(void);
 
 short obstacleDistanceIsFaraway(inputs*);
