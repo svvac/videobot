@@ -33,9 +33,9 @@
 
 void main() {
     // Ports
-    port    input, motors, states;
+    port    input, motors, output;
     inputs  iMem = {&input, 0};
-    outputs oMem = {&states, &motors, 0};
+    outputs oMem = {&output, &motors, 0};
 
     portInit(&input,    &PORTB,     &TRISB);
     portSetFreezed(&input);
@@ -47,11 +47,11 @@ void main() {
     portBlank(&motors);
     portSync(&motors);
 
-    portInit(&states,   &PORTD,     &TRISD);
-    portSetLive(&states);
-    portSetOutput(&states);
-    portBlank(&states);
-    portSync(&states);
+    portInit(&output,   &PORTD,     &TRISD);
+    portSetLive(&output);
+    portSetOutput(&output);
+    portBlank(&output);
+    portSync(&output);
 
     // Cleans ports
     syncOutputs(&oMem);
