@@ -37,17 +37,17 @@ void main() {
     inputs  iMem = {&input, 0};
     outputs oMem = {&output, &motors, 0};
 
-    portInit(&input,    &PORTB,     &TRISB);
+    portInit(&input,    &PORTC,     &TRISC);
     portSetFreezed(&input);
     portSetInput(&input);
 
-    portInit(&motors,   &PORTC,     &TRISC);
+    portInit(&motors,   &PORTD,     &TRISD);
     portSetFreezed(&motors);
     portSetOutput(&motors);
     portBlank(&motors);
     portSync(&motors);
 
-    portInit(&output,   &PORTD,     &TRISD);
+    portInit(&output,   &PORTB,     &TRISB);
     portSetLive(&output);
     portSetOutput(&output);
     portBlank(&output);
