@@ -42,6 +42,13 @@
 #include "buffer.h"
 #include "typedefs.h"
 
+/**
+ * static void bufferAppend(unsigned char d,
+ *                          unsigned char* buf,
+ *                          unsigned int size)
+ *
+ * Append the char `d` at the end of the buffer `buf` of size `size`
+ */
 static void bufferAppend(unsigned char d, unsigned char* buf, unsigned int size) {
     unsigned int left;
 
@@ -54,6 +61,13 @@ static void bufferAppend(unsigned char d, unsigned char* buf, unsigned int size)
     }
 }
 
+/**
+ * static unsigned char bufferPop(unsigned char* buf,
+ *                                unsigned int size)
+ *
+ * Return the char on the top of the buffer `buf` of size `size`, then
+ * delete it.
+ */
 static unsigned char bufferPop(unsigned char* buf, unsigned int size) {
     unsigned char f;
     unsigned int i;
@@ -67,10 +81,22 @@ static unsigned char bufferPop(unsigned char* buf, unsigned int size) {
     return f;
 }
 
+/**
+ * static unsigned char bufferGetNext(unsigned char* buf,
+ *                                    unsigned int size)
+ *
+ * Return the next char in the buffer
+ */
 static unsigned char bufferGetNext(unsigned char* buf, unsigned int size) {
-    return buf[1];
+    return buf[0];
 }
 
+/**
+ * static void bufferClean(unsigned char* buf,
+ *                         unsigned int size)
+ *
+ * Cleans the buffer (replace all values with ASCII null)
+ */
 static void bufferClean(unsigned char* buf, unsigned int size) {
     unsigned int i;
     for (i = 0; i < size; i++) {
@@ -78,6 +104,14 @@ static void bufferClean(unsigned char* buf, unsigned int size) {
     }
 }
 
+/**
+ * static void bufferCleanTo(unsigned char delim,
+ *                           unsigned char* buf,
+ *                           unsigned int size)
+ *
+ * Cleans the buffer `buf` until it encounters the `delim` char. If `delim`
+ * is not in the buffer, the function completely cleans it.
+ */
 static void bufferCleanTo(unsigned char delim, unsigned char* buf, unsigned int size) {
     unsigned int i, j;
     short found = false;
@@ -93,10 +127,16 @@ static void bufferCleanTo(unsigned char delim, unsigned char* buf, unsigned int 
         j++;
     }
 
-    if (found == false)
-        bufferClean(buf, size);
+    for (j = j; j < size; j++)
+        buf[j] = 0x00;
 }
 
+/**
+ * static unsigned int bufferGetSize(unsigned char* buf,
+ *                                   unsigned int size)
+ *
+ * Returns the position of the first ASCII null char in the buffer `buf`
+ */
 static unsigned int bufferGetSize(unsigned char* buf, unsigned int size) {
     unsigned int i;
 
