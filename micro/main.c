@@ -42,7 +42,10 @@
  */
 
 
+#define RS232_UART1
+
 #include "typedefs.h"
+#include "rs232.h"
 
 static void performIterTasks(void);
 void initializeSystem(void);
@@ -59,7 +62,7 @@ void main(void) {
 
     /* Endless loop */
     do {
-
+        performIterTasks();
     } while (true);
 }
 
@@ -72,7 +75,6 @@ void main(void) {
  */
 void initializeSystem(void) {
     /* Setups port A as output and clean */
-    LATA            = 0x00;
     TRISA           = 0x00;
     /* Turns analog inputs to digital inputs and turns off ADC */
     ADCON1          = 0x0F;
@@ -101,6 +103,9 @@ void initializeSystem(void) {
     /* Setups port E as output and cleans */
     TRISE           = 0x00;
     PORTE           = 0x00;
+
+    /* Initializes serial module */
+    RS232Init();
 }
 
 
