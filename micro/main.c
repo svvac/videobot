@@ -42,6 +42,8 @@
  */
 
 
+#include "typedefs.h"
+
 static void performIterTasks(void);
 void initializeSystem(void);
 
@@ -55,20 +57,10 @@ void main(void) {
     /* Setups the system, defines ports states and some other stuff */
     initializeSystem();
 
-    PORTA = 0xff;
-    PORTB = 0x00;
-    PORTC = 0xff;
-    PORTD = 0x00;
-    PORTE = 0xff;
-
     /* Endless loop */
     do {
-        PORTA = ~PORTA;
-        PORTB = ~PORTB;
-        PORTC = ~PORTC;
-        PORTD = ~PORTD;
-        PORTE = ~PORTE;
-    } while (1);
+
+    } while (true);
 }
 
 
@@ -84,7 +76,6 @@ void initializeSystem(void) {
     TRISA           = 0x00;
     /* Turns analog inputs to digital inputs and turns off ADC */
     ADCON1          = 0x0F;
-    ADCON0bits.ADON = 0;
     /* Comparators as digital inputs */
     CMCON           = 0x07;
     /* Cleans */
@@ -92,7 +83,6 @@ void initializeSystem(void) {
 
 
     /* Setups port B as output and cleans */
-    LATB            = 0x00;
     TRISB           = 0x00;
     PORTB           = 0x00;
 
@@ -101,17 +91,14 @@ void initializeSystem(void) {
      *      RX  --->  RC7
      *      TX  --->  RC6
      */
-    LATC            = 0x00;
     TRISC           = 0x80;
     PORTC           = 0x00;
 
     /* Setups port D as output and cleans */
-    LATD            = 0x00;
     TRISD           = 0x00;
     PORTD           = 0x00;
 
     /* Setups port E as output and cleans */
-    LATE            = 0x00;
     TRISE           = 0x00;
     PORTE           = 0x00;
 }
