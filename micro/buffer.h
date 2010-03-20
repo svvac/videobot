@@ -80,6 +80,9 @@ void RxBufferCleanTo(unsigned char);
 
 unsigned int RxBufferGetSize(void);
 
+unsigned int RxBufferLeftSpace(void);
+
+
 void TxBufferAppend(unsigned char);
 
 unsigned char TxBufferPop(void);
@@ -91,5 +94,7 @@ void TxBufferClean(void);
 void TxBufferCleanTo(unsigned char);
 
 unsigned int TxBufferGetSize(void);
+
+unsigned int TxBufferLeftSpace(void);
 
 #endif

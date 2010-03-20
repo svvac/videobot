@@ -172,6 +172,10 @@ unsigned int RxBufferGetSize(void) {
     return bufferGetSize(&RxBuffer, RxBUF_SIZE);
 }
 
+unsigned int RxBufferLeftSpace(void) {
+    return RxBufferGetSize - RxBufferGetSize();
+}
+
 
 void TxBufferAppend(unsigned char d) {
     bufferAppend(d, &TxBuffer, TxBUF_SIZE);
@@ -195,4 +199,8 @@ void TxBufferCleanTo(unsigned char delim) {
 
 unsigned int TxBufferGetSize(void) {
     return bufferGetSize(&TxBuffer, TxBUF_SIZE);
+}
+
+unsigned int TxBufferLeftSpace(void) {
+    return TxBufferGetSize - TxBufferGetSize();
 }
