@@ -42,10 +42,9 @@
  */
 
 
-#define RS232_UART1
-
 #include "typedefs.h"
 #include "rs232.h"
+#include "io.h"
 
 static void performIterTasks(void);
 void initializeSystem(void);
@@ -63,6 +62,7 @@ void main(void) {
     /* Endless loop */
     do {
         performIterTasks();
+        processIO();
     } while (true);
 }
 
@@ -116,5 +116,6 @@ void initializeSystem(void) {
  * endless loop.
  */
 static void performIterTasks(void) {
-
+    populateRxBuffer();
+    emitTxBuffer();
 }

@@ -42,6 +42,9 @@
 #include "buffer.h"
 #include "typedefs.h"
 
+unsigned char RxBuffer[RxBUF_SIZE];
+unsigned char TxBuffer[TxBUF_SIZE];
+
 /**
  * static void bufferAppend(unsigned char d,
  *                          unsigned char* buf,
@@ -173,7 +176,7 @@ unsigned int RxBufferGetSize(void) {
 }
 
 unsigned int RxBufferLeftSpace(void) {
-    return RxBufferGetSize - RxBufferGetSize();
+    return RxBufferGetSize() - RxBufferGetSize();
 }
 
 
@@ -202,5 +205,5 @@ unsigned int TxBufferGetSize(void) {
 }
 
 unsigned int TxBufferLeftSpace(void) {
-    return TxBufferGetSize - TxBufferGetSize();
+    return TxBufferGetSize() - TxBufferGetSize();
 }

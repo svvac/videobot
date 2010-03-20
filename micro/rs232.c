@@ -23,7 +23,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @file        /rs232.h
+ * @file        /rs232.c
  * @description Defines some accessors to USART methods.
  * @author      Simon "swordofpain" Wachter
  *
@@ -40,19 +40,25 @@
  */
 
 
-#ifndef DEF_RS232
-#define DEF_RS232
+#include "rs232.h"
+#include "typedefs.h"
 
-/* Select if you wish to use USART_* functions instead of UART1_* ones */
-#define RS232_UART1
-//#define RS232_USART
+unsigned short RS232Initialized = false;
 
-void RS232Init(void);
+#ifdef RS232_USART
+void RS232Init(void) { USART_Init(2400); RS232Initialized = true; }
 
-unsigned short RS232DataReady(void);
+unsigned short RS232DataReady(void) { return USART_Data_Ready(); }
 
-unsigned char RS232Read();
+unsigned char RS232Read() { return USART_Read(); }
 
-void RS232Write(unsigned char);
+void RS232Write(unsigned char b) { USART_Write(b); }
+#else
+void RS232Init(void) { UART1_Init(2400); }
 
+unsigned short RS232DataReady(void) { return UART1_Data_Ready(); RS232Initialized = true; }
+
+unsigned char RS232Read() { return UART1_Read(); }
+
+void RS232Write(unsigned char b) { UART1_Write(b); }
 #endif

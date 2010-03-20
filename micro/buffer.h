@@ -48,9 +48,6 @@
 
 #define PACKET_SEPARATOR 0x0a
 
-unsigned char RxBuffer[RxBUF_SIZE];
-unsigned char TxBuffer[TxBUF_SIZE];
-
 
 /* Methods */
 
