@@ -42,7 +42,7 @@
 #ifndef DEF_RS232
 #define DEF_RS232
 
-#include "types.h"
+#include "typedefs.h"
 
 unsigned short RS232Initialized = false;
 
@@ -57,7 +57,7 @@ void RS232Write(unsigned char b) { USART_Write(b); }
 #else
 void RS232Init(void) { UART1_Init(2400); }
 
-unsigned short RS232DataReady(void) { return UART1_Data_Ready(); }
+unsigned short RS232DataReady(void) { return UART1_Data_Ready(); RS232Initialized = true; }
 
 unsigned char RS232Read() { return UART1_Read(); }
 
