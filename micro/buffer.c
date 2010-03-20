@@ -145,3 +145,54 @@ static unsigned int bufferGetSize(unsigned char* buf, unsigned int size) {
 
     return i;
 }
+
+
+
+void RxBufferAppend(unsigned char d) {
+    bufferAppend(d, &RxBuffer, RxBUF_SIZE);
+}
+
+unsigned char RxBufferPop(void) {
+    return bufferPop(&RxBuffer, RxBUF_SIZE);
+}
+
+unsigned char RxBufferGetNext(void) {
+    return bufferGetNext(&RxBuffer, RxBUF_SIZE);
+}
+
+void RxBufferClean(void) {
+    bufferClean(&RxBuffer, RxBUF_SIZE);
+}
+
+void RxBufferCleanTo(unsigned char delim) {
+    bufferCleanTo(delim, &RxBuffer, RxBUF_SIZE);
+}
+
+unsigned int RxBufferGetSize(void) {
+    return bufferGetSize(&RxBuffer, RxBUF_SIZE);
+}
+
+
+void TxBufferAppend(unsigned char d) {
+    bufferAppend(d, &TxBuffer, TxBUF_SIZE);
+}
+
+unsigned char TxBufferPop(void) {
+    return bufferPop(&TxBuffer, TxBUF_SIZE);
+}
+
+unsigned char TxBufferGetNext(void) {
+    return bufferGetNext(&TxBuffer, TxBUF_SIZE);
+}
+
+void TxBufferClean(void) {
+    bufferClean(&TxBuffer, TxBUF_SIZE);
+}
+
+void TxBufferCleanTo(unsigned char delim) {
+    bufferCleanTo(delim, &TxBuffer, TxBUF_SIZE);
+}
+
+unsigned int TxBufferGetSize(void) {
+    return bufferGetSize(&TxBuffer, TxBUF_SIZE);
+}

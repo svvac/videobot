@@ -66,4 +66,30 @@ static void bufferCleanTo(unsigned char, unsigned char*, unsigned int);
 
 static unsigned int bufferGetSize(unsigned char*, unsigned int);
 
+/* Accessors */
+
+void RxBufferAppend(unsigned char);
+
+unsigned char RxBufferPop(void);
+
+unsigned char RxBufferGetNext(void);
+
+void RxBufferClean(void);
+
+void RxBufferCleanTo(unsigned char);
+
+unsigned int RxBufferGetSize(void);
+
+void TxBufferAppend(unsigned char);
+
+unsigned char TxBufferPop(void);
+
+unsigned char TxBufferGetNext(void);
+
+void TxBufferClean(void);
+
+void TxBufferCleanTo(unsigned char);
+
+unsigned int TxBufferGetSize(void);
+
 #endif
