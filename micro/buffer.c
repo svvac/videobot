@@ -142,12 +142,7 @@ static void bufferCleanTo(unsigned char delim, unsigned char* buf, unsigned int 
  * Returns the position of the first ASCII null char in the buffer `buf`
  */
 static unsigned int bufferGetSize(unsigned char* buf, unsigned int size) {
-    unsigned int i;
-
-    for (i = 0; i < size && buf[i]; i++)
-        continue;
-
-    return i;
+    return strlen(buf);
 }
 
 
