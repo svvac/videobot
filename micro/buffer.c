@@ -143,7 +143,7 @@ static void bufferCleanTo(unsigned char delim, unsigned char* buf, unsigned int 
 static unsigned int bufferGetSize(unsigned char* buf, unsigned int size) {
     unsigned int i;
 
-    for (i = 0; i < size && buf[i] != 0x00; i++)
+    for (i = 0; i < size && buf[i]; i++)
         continue;
 
     return i;
