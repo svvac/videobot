@@ -40,7 +40,7 @@
  */
 
 #include "buffer.h"
-#include "typedefs.h"
+#include "constants.h"
 
 unsigned char RxBuffer[RxBUF_SIZE];
 unsigned char TxBuffer[TxBUF_SIZE];

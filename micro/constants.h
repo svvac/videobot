@@ -23,26 +23,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @file        /typedefs.h
- * @description Defines some usefull types or constants
+ * @file        /constants.h
+ * @description Defines some usefull constants
  * @author      Simon "swordofpain" Wachter
  *
  * @licence     GNU GPL v3 (see /LICENCE)
  * @package     videobot
  * @subpackage  mcu-slave
  *
- * @created     2010-03-20
- * @updated     2010-03-20
+ * @created     2010-03-21
+ * @updated     2010-03-21
  *
  * @web         http://swordofpain.tk/tracker/projects/videobot
  * @repository  http://github.com/swordofpain/videobot
  *
  */
 
-#ifndef DEF_TYPES
-#define DEF_TYPES
+#ifndef DEF_CONSTANTS
+#define DEF_CONSTANTS
 
-/* Defines booleans */
+/* Version */
+#define VERSION "PIC SLAVE v0.1B"
+
+/* Booleans */
 #define true  1
 #define false 0
 

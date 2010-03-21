@@ -34,7 +34,7 @@
  * @subpackage  mcu-slave
  *
  * @created     2010-03-20
- * @updated     2010-03-20
+ * @updated     2010-03-21
  *
  * @web         http://swordofpain.tk/tracker/projects/videobot
  * @repository  http://github.com/swordofpain/videobot
@@ -42,7 +42,7 @@
  */
 
 
-#include "typedefs.h"
+#include "constants.h"
 #include "rs232.h"
 #include "buffer.h"
 #include "io.h"
@@ -62,15 +62,8 @@ void main(void) {
 
     /* Endless loop */
     do {
-        while (RS232DataReady() && RxBufferLeftSpace() > 0) {
-            RxBufferAppend(RS232Read());
-        }
-
-        while (RxBufferGetSize() > 0 && TxBufferLeftSpace() > 0) {
-            TxBufferAppend(RxBufferPop())
-        }
-
-        emitTxBuffer();
+        performIterTasks();
+        processIO();
     } while (true);
 }
 
