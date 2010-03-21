@@ -44,6 +44,7 @@
 #include "constants.h"
 #include "buffer.h"
 #include "rs232.h"
+#include "processor.h"
 
 
 
@@ -57,32 +58,45 @@ void processIO(void) {
     unsigned char c1, c2;
 
     switch (RxBuffergetSize()) {
+        /* The buffer is empty, so we won't do anything */
         case 0:
             return;
             break;
+        /* The buffer contains only one byte. We raise an BadQuery
+         * error; a command is at least composed by the command
+         * identifier, followed by the packet separator.
+         */
         case 1:
-            c1 = toupper(RxBufferPop());
-            cmd = c1;
+            cmd = false;
+            EBadQuery();
             break;
+        /* Elseway */
         case 2:
         default:
             c1 = toupper(RxBufferPop());
-            c2 = toupper(RxBufferGetNext());
 
-            if (c2 == IO_PACKET_SEPARATOR || c2 == IO_ARG_SEPARATOR) {
+            if (checkSeparator()) {
                 cmd = c1;
             } else {
-                cmd = c1 * 256 + c2;
-                RxBufferPop();
+                c2 = RxBufferPop();
+
+                if (checkSeparator())
+                    cmd = c1 * 256 + c2;
+                else {
+                    cmd = false;
+                    EBadQuery();
+                }
             }
     }
 
-    switch (cmd) {
-        case 'V':
-            sendConstPacket(VERSION);
-            break;
-        default:
-            EWrongCommand();
+    if (cmd) {
+        switch (cmd) {
+            case 'V':
+                parseVPacket();
+                break;
+            default:
+                EWrongCommand();
+        }
     }
     RxBufferCleanTo(IO_PACKET_SEPARATOR);
 }
@@ -90,13 +104,21 @@ void processIO(void) {
 /**
  * void populateRxBuffer(void)
  *
- * Reads RS232 input buffer and adds data to our own buffer
+ * Reads RS232 input buffer and adds data to our own buffer.
+ * The execution of the rest of the code is blocked until we
+ * recieve the packet separator (I haven't found an other way
+ * to prevent bytes vanishing caused by the limited size of the
+ * hardware buffer).
  */
 void populateRxBuffer(void) {
-    Delay_ms(200);
-    while (RS232DataReady() && RxBufferLeftSpace() > 0) {
-        RxBufferAppend(RS232Read());
-    }
+    char bf;
+
+    do {
+        if (RS232DataReady()) {
+            bf = RS232Read();
+            RxBufferAppend(bf);
+        }
+    } while (bf != IO_PACKET_SEPARATOR && RxBufferleftSpace() > 0);
 }
 
 /**
@@ -108,6 +130,22 @@ void emitTxBuffer(void) {
     while (TxBufferGetSize() > 0) {
         RS232Write(TxBufferPop());
     }
+}
+
+/**
+ * unsigned short checkSeparator(void)
+ *
+ * Check if the next byte in the Rx buffer is a separator
+ * (packet separator or arg separator).
+ */
+unsigned short checkSeparator(void) {
+    char bf;
+    bf = RxBufferGetNext();
+
+    if (bf == IO_PACKET_SEPARATOR || bf == IO_ARG_SEPARATOR)
+        return true;
+    else
+        return false;
 }
 
 /**

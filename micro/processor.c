@@ -23,8 +23,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @file        /io.h
- * @description Performs I/O related tasks
+ * @file        /processor.c
+ * @description Parse packets and execute proper actions
  * @author      Simon "swordofpain" Wachter
  *
  * @licence     GNU GPL v3 (see /LICENCE)
@@ -39,37 +39,13 @@
  *
  */
 
-#ifndef DEF_IO
-#define DEF_IO
 
-/* Use LF (0x0a, aka \n) as packet separator */
-#define IO_PACKET_SEPARATOR     0x0a
+#include "processor.h"
+#include "constants.h"
+#include "io.h"
+#include "buffer.h"
 
-/* Use : as arg separator */
-#define IO_ARG_SEPARATOR        0x3a
 
-void processIO(void);
-
-void populateRxBuffer(void);
-
-void emitTxBuffer(void);
-
-unsigned short checkSeparator(void);
-
-void sendPacket(char*);
-
-void sendError(char*);
-
-void sendComment(char*);
-
-void sendConstPacket(const char*);
-
-void sendConstError(const char*);
-
-void sendConstComment(const char*);
-
-void EBadQuery(void);
-
-void EWrongCommand(void);
-
-#endif
+void parseVPacket(void) {
+    sendConstPacket(VERSION);
+}
