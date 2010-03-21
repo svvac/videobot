@@ -44,5 +44,7 @@
 
 void parseVPacket(void);
 
+void parseSBPacket(void);
+
 
 #endif

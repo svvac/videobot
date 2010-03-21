@@ -90,15 +90,27 @@ void processIO(void) {
     }
 
     if (cmd) {
+        /* Removes separator */
+        RxBufferPop();
+
         switch (cmd) {
+            /* V: Version packets */
             case 'V':
                 parseVPacket();
+                break;
+            /* SB: Set Byte packets */
+            case 'S' * 256 + 'B':
+                parseSBPacket();
                 break;
             default:
                 EWrongCommand();
         }
     }
+
+    sendConstPacket(IO_DONE);
+
     RxBufferCleanTo(IO_PACKET_SEPARATOR);
+    emitTxBuffer();
 }
 
 /**
@@ -106,7 +118,7 @@ void processIO(void) {
  *
  * Reads RS232 input buffer and adds data to our own buffer.
  * The execution of the rest of the code is blocked until we
- * recieve the packet separator (I haven't found an other way
+ * receive the packet separator (I haven't found an other way
  * to prevent bytes vanishing caused by the limited size of the
  * hardware buffer).
  */
@@ -123,7 +135,7 @@ void populateRxBuffer(void) {
     } while (bf != IO_PACKET_SEPARATOR && bf != 0x00 && RxBufferleftSpace() > 0);
 
     if (recv == true)
-        sendConstPacket("OK");
+        sendConstPacket(IO_OK);
 }
 
 /**
@@ -148,6 +160,38 @@ unsigned short checkSeparator(void) {
     bf = RxBufferGetNext();
 
     if (bf == IO_PACKET_SEPARATOR || bf == IO_ARG_SEPARATOR)
+        return true;
+    else
+        return false;
+}
+
+/**
+ * unsigned short checkArgSeparator(void)
+ *
+ * Check if the next byte in the Rx buffer is the argument
+ * separator
+ */
+unsigned short checkArgSeparator(void) {
+    char bf;
+    bf = RxBufferGetNext();
+
+    if (bf == IO_ARG_SEPARATOR)
+        return true;
+    else
+        return false;
+}
+
+/**
+ * unsigned short checkPacketSeparator(void)
+ *
+ * Check if the next byte in the Rx buffer is the argument
+ * separator
+ */
+unsigned short checkPacketSeparator(void) {
+    char bf;
+    bf = RxBufferGetNext();
+
+    if (bf == IO_PACKET_SEPARATOR)
         return true;
     else
         return false;
@@ -188,6 +232,7 @@ void sendError(char* b) {
     TxBufferAppend('E');
     TxBufferAppend(' ');
     sendPacket(b);
+    sendConstPacket(IO_FAILED);
 }
 
 /**
@@ -200,6 +245,7 @@ void sendConstError(const char* b) {
     TxBufferAppend('E');
     TxBufferAppend(' ');
     sendConstPacket(b);
+    sendConstPacket(IO_FAILED);
 }
 
 /**
@@ -225,6 +271,42 @@ void sendConstComment(const char* b) {
 }
 
 /**
+ * long extractNumber(void)
+ *
+ * Extract a number from an argument
+ */
+long extractNumber(unsigned int size) {
+    unsigned int i;
+    long value = 0;
+    char bf;
+    const unsigned int pow[4] = {1, 10, 100, 1000};
+
+    size = min(4, size);
+
+    for (i = 0; i < size; i++) {
+        if (checkSeparator())
+            break;
+        bf = RxBufferGetNext();
+        if (bf >= 0x30 && bf <= 0x39) {
+            value += (bf - 0x30) * pow[size - i - 1];
+            RxBufferPop();
+        } else {
+            EValueError();
+            sendConstComment("Not a number.");
+            return -1;
+        }
+    }
+
+    if (i == size) {
+        return value;
+    } else {
+        EValueError();
+        sendConstComment("Not enough digits.");
+        return -1;
+    }
+}
+
+/**
  * void EBadQuery(void)
  *
  * Sends the "BAD QUERY" error message
@@ -240,4 +322,41 @@ void EBadQuery(void) {
  */
 void EWrongCommand(void) {
     sendConstError("02 WRONG COMMAND IDENTIFIER");
+}
+
+
+/**
+ * void EPacketTooLong(void)
+ *
+ * Sends the "PACKET TOO LONG" error message
+ */
+void EPacketTooLong(void) {
+    sendConstError("03 PACKET TOO LONG/TOO MUCH ARGUMENTS");
+}
+
+/**
+ * void EPacketTooShort(void)
+ *
+ * Sends the "PACKET TOO SHORT" error message
+ */
+void EPacketTooShort(void) {
+    sendConstError("04 PACKET TOO SHORT/MISSING ARGUMENT(S)");
+}
+
+/**
+ * void EValueError(void)
+ *
+ * Sends the "VALUE ERROR" error message
+ */
+void EValueError(void) {
+    sendConstError("05 VALUE ERROR");
+}
+
+/**
+ * void EOutOfRange(void)
+ *
+ * Sends the "OUT OF RANGE" error message
+ */
+void EOutOfRange(void) {
+    sendConstError("06 VALUE OUT OF RANGE");
 }

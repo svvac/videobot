@@ -48,6 +48,12 @@
 /* Use : as arg separator */
 #define IO_ARG_SEPARATOR        0x3a
 
+/* States */
+#define IO_OK                   "*RECEIVED"
+#define IO_SUCCESS              "*SUCCESS"
+#define IO_FAILED               "*FAILED"
+#define IO_DONE                 "*DONE
+
 void processIO(void);
 
 void populateRxBuffer(void);
@@ -55,6 +61,10 @@ void populateRxBuffer(void);
 void emitTxBuffer(void);
 
 unsigned short checkSeparator(void);
+
+unsigned short checkArgSeparator(void);
+
+unsigned short checkPacketSeparator(void);
 
 void sendPacket(char*);
 
@@ -68,8 +78,18 @@ void sendConstError(const char*);
 
 void sendConstComment(const char*);
 
+long extractNumber(unsigned int);
+
 void EBadQuery(void);
 
 void EWrongCommand(void);
+
+void EPacketTooLong(void);
+
+void EPacketTooShort(void);
+
+void EValueError(void);
+
+void EOutOfRange(void);
 
 #endif
