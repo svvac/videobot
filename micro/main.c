@@ -111,6 +111,9 @@ void initializeSystem(void) {
     /* Cleans buffers */
     RxBufferClean();
     TxBufferClean();
+
+    /* Wait for the USART module to stamilize */
+    Delay_ms(100);
 }
 
 
