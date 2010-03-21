@@ -98,9 +98,15 @@ void processIO(void) {
             case 'V':
                 parseVPacket();
                 break;
-            /* SB: Set Byte packets */
+            /* SB: Set Bit packets */
             case 'S' * 256 + 'B':
+            case 'W' * 256 + 'B':
                 parseSBPacket();
+                break;
+            /* GB: Get Bit packets */
+            case 'R' * 256 + 'B':
+            case 'G' * 256 + 'B':
+                parseGBPacket();
                 break;
             default:
                 EWrongCommand();

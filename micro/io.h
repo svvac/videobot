@@ -52,7 +52,7 @@
 #define IO_OK                   "*RECEIVED"
 #define IO_SUCCESS              "*SUCCESS"
 #define IO_FAILED               "*FAILED"
-#define IO_DONE                 "*DONE
+#define IO_DONE                 "*DONE"
 
 void processIO(void);
 

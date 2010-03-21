@@ -66,14 +66,14 @@ void parseVPacket(void) {
 /**
  * void parseSBPacket(void)
  *
- * Parse "SB" (stands for "Set Byte") packets.
+ * Parse "SB" (stands for "Set Bit") packets.
  *
  * Packet prototype :
- *      SB:P:B:V<LF>
+ *      SB:<P>:<B>:<V><LF>
  *
- *  - P: Port identifier
- *  - B: Bit id
- *  - V: State (1, H: High ; 0, L: Low)
+ *  - <P>: Port identifier
+ *  - <B>: Bit id
+ *  - <V>: State (1, H: High ; 0, L: Low)
  */
 void parseSBPacket(void) {
     char c1;
@@ -158,5 +158,94 @@ void parseSBPacket(void) {
             break;
     }
 
+    sendConstPacket(IO_SUCCESS);
+}
+
+
+/**
+ * void parseSBPacket(void)
+ *
+ * Parse "GB" (stands for "Get Bit") packets.
+ *
+ * Packet prototype :
+ *      GB:<P>:<B><LF>
+ *
+ *  - <P>: Port identifier
+ *  - <B>: Bit id
+ *
+ * Slave's answer :
+ *      A:<P>:<B>:<S><LF>
+ *
+ *  - <P>: Port identifier
+ *  - <B>: Bit id
+ *  - <S>: Bit state (H: High, L: Low)
+ */
+void parseGBPacket(void) {
+    char c1;
+    int v1, mask;
+    volatile unsigned char* ptr;
+    char answer[] = "A:X:N:S";
+
+    c1 = toupper(RxBufferPop());
+
+    if (!checkArgSeparator()) {
+        EValueError();
+        return;
+    } else if (checkPacketSeparator()) {
+        EPacketTooShort();
+        return;
+    }
+    RxBufferPop();
+
+    switch (c1) {
+        case 'A':
+            ptr = &PORTA;
+            break;
+        case 'B':
+            ptr = &PORTB;
+            break;
+        case 'C':
+            ptr = &PORTC;
+            break;
+        case 'D':
+            ptr = &PORTD;
+            break;
+        case 'E':
+            ptr = &PORTE;
+            break;
+        default:
+            EValueError();
+            sendConstComment("No such port.");
+            return;
+            break;
+
+    }
+
+    answer[2] = c1;
+
+    //c1 = RxBufferPop();
+    //v1 = c1 - 0x30;
+    v1 = extractNumber(1);
+
+    if (v1 < 0 || v1 > 7) {
+        EOutOfRange();
+        return;
+    }
+
+    answer[4] = v1 + 0x30;
+
+    mask = 0x01 << v1;
+
+    if (!checkPacketSeparator()) {
+        EPacketTooLong();
+        return;
+    }
+
+    if ((*ptr & mask) > 0)
+        answer[6] = 'H';
+    else
+        answer[6] = 'L';
+
+    sendPacket(answer);
     sendConstPacket(IO_SUCCESS);
 }
