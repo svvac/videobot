@@ -62,3 +62,9 @@ unsigned char RS232Read() { return UART1_Read(); }
 
 void RS232Write(unsigned char b) { UART1_Write(b); }
 #endif
+
+void RS232WriteWord(unsigned char* b) {
+    while (*b) {
+        RS232Write(*b++);
+    }
+}

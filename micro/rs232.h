@@ -51,8 +51,10 @@ void RS232Init(void);
 
 unsigned short RS232DataReady(void);
 
-unsigned char RS232Read();
+unsigned char RS232Read(void);
 
 void RS232Write(unsigned char);
+
+void RS232WriteWord(unsigned char*);
 
 #endif
