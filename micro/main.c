@@ -44,6 +44,7 @@
 
 #include "typedefs.h"
 #include "rs232.h"
+#include "buffer.h"
 #include "io.h"
 
 static void performIterTasks(void);
@@ -106,6 +107,10 @@ void initializeSystem(void) {
 
     /* Initializes serial module */
     RS232Init();
+
+    /* Cleans buffers */
+    RxBufferClean();
+    TxBufferClean();
 }
 
 
