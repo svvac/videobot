@@ -120,22 +120,19 @@ static void bufferClean(unsigned char* buf, unsigned int size) {
  * is not in the buffer, the function completely cleans it.
  */
 static void bufferCleanTo(unsigned char delim, unsigned char* buf, unsigned int size) {
-    unsigned int i, j;
-    short found = false;
-    for (i = 0; i < size; i++) {
-        if (!found && buf[i] != delim)
-            continue;
-        else if (!found && buf[i] == delim) {
-            found = true;
-            continue;
-        }
+    char* ptr;
+    unsigned int i;
 
-        buf[j] = buf[i];
-        j++;
+    ptr = strchr(buf, delim);
+    *ptr++;
+
+    for (i = 0; *ptr && i < size; i++)
+        buf[i] = *ptr++;
+
+    while (i < size) {
+        buf[i] = 0x00;
+        i++;
     }
-
-    for (j = j; j < size; j++)
-        buf[j] = 0x00;
 }
 
 /**
