@@ -112,13 +112,18 @@ void processIO(void) {
  */
 void populateRxBuffer(void) {
     char bf;
+    short recv = false;
 
     do {
         if (RS232DataReady()) {
             bf = RS232Read();
             RxBufferAppend(bf);
+            recv = true;
         }
-    } while (bf != IO_PACKET_SEPARATOR && RxBufferleftSpace() > 0);
+    } while (bf != IO_PACKET_SEPARATOR && bf != 0x00 && RxBufferleftSpace() > 0);
+
+    if (recv == true)
+        sendConstPacket("OK");
 }
 
 /**
