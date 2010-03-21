@@ -44,9 +44,7 @@
 
 /* Constants */
 #define RxBUF_SIZE 64
-#define TxBUF_SIZE 64
-
-#define PACKET_SEPARATOR 0x0a
+#define TxBUF_SIZE 128
 
 
 /* Methods */

@@ -63,6 +63,113 @@ void parseVPacket(void) {
 }
 
 
+///**
+// * void parseCPacket(void)
+// *
+// * Parse "C" (stands for "Configure") packets.
+// *
+// * Packet prototype :
+// *      C:<A>:<B>:<C>:<D>:<E>:<AD><LF>
+// *
+// *  - <A>: Port A's TRIS
+// *  - <B>: Port B's TRIS
+// *  - <C>: Port C's TRIS
+// *  - <D>: Port D's TRIS
+// *  - <E>: Port E's TRIS
+// *  - <AD>: Number of A/D pins to enable
+// *  - <V>: State (1, H: High ; 0, L: Low)
+// */
+//void parseCPacket(void) {
+//    char PA, PB, PC, PD, PE, PAD;
+//    //unsigned int v1;
+//    //volatile unsigned char* ptr;
+//
+//    /* Port A */
+//    PA = extractHex();
+//    if (PA < 0 || PA > 255) {
+//        EOutOfRange();
+//        return;
+//    }
+//    if (!manageSeparator())
+//        return;
+//
+//    /* Port B */
+//    PB = extractHex();
+//    if (PB < 0 || PB > 255) {
+//        EOutOfRange();
+//        return;
+//    }
+//
+//    if (!manageSeparator())
+//        return;
+//
+//    /* Port C */
+//    PC = extractHex();
+//    if (PC < 0 || PC > 255) {
+//        EOutOfRange();
+//        return;
+//    }
+//
+//    if (!manageSeparator())
+//        return;
+//
+//    /* Port D */
+//    PD = extractHex();
+//    if (PD < 0 || PD > 255) {
+//        EOutOfRange();
+//        return;
+//    }
+//
+//    if (!manageSeparator())
+//        return;
+//
+//    /* Port E */
+//    PE = extractHex();
+//    if (PE < 0 || PE > 15) {
+//        EOutOfRange();
+//        return;
+//    }
+//
+//    if (!manageSeparator())
+//        return;
+//
+//    /* Analog */
+//    /* Port A */
+//    PAD = extractHex();
+//    if (PAD < 0 || PAD > 13) {
+//        EOutOfRange();
+//        return;
+//    }
+//
+//    if (!checkPacketSeparator()) {
+//        EPacketTooLong();
+//        return;
+//    }
+//
+//    TRISA = PA;
+//    TRISB = PB;
+//    TRISC = PC;
+//    TRISD = PD;
+//    TRISE = PE;
+//
+//    if (PAD == 0) {
+//        ADCON1          = 0x0f;
+//        ADON_bit        = 0;
+//    } else {
+//        ADCON0          = 0x00;
+//        ADCON1          = 0x0f - PAD;
+//
+//        /* Set up ADCON2 options
+//		 * A/D Result right justified
+//		 * Acq time = 20 Tad (?)
+//		 * Tad = Fosc/64
+//		 */
+//		ADCON2          = 0b10111110;
+//        ADON_bit        = 1;
+//    }
+//}
+
+
 /**
  * void parseSBPacket(void)
  *
@@ -82,14 +189,8 @@ void parseSBPacket(void) {
 
     c1 = toupper(RxBufferPop());
 
-    if (!checkArgSeparator()) {
-        EValueError();
+    if (!manageSeparator())
         return;
-    } else if (checkPacketSeparator()) {
-        EPacketTooShort();
-        return;
-    }
-    RxBufferPop();
 
     switch (c1) {
         case 'A':
@@ -126,14 +227,8 @@ void parseSBPacket(void) {
 
     mask = 0x01 << v1;
 
-    if (!checkArgSeparator()) {
-        EValueError();
+    if (!manageSeparator())
         return;
-    } else if (checkPacketSeparator()) {
-        EPacketTooShort();
-        return;
-    }
-    RxBufferPop();
 
     c1 = toupper(RxBufferPop());
 
@@ -188,14 +283,8 @@ void parseGBPacket(void) {
 
     c1 = toupper(RxBufferPop());
 
-    if (!checkArgSeparator()) {
-        EValueError();
+    if (!manageSeparator())
         return;
-    } else if (checkPacketSeparator()) {
-        EPacketTooShort();
-        return;
-    }
-    RxBufferPop();
 
     switch (c1) {
         case 'A':
@@ -245,6 +334,44 @@ void parseGBPacket(void) {
         answer[6] = 'H';
     else
         answer[6] = 'L';
+
+    sendPacket(answer);
+    sendConstPacket(IO_SUCCESS);
+}
+
+
+/**
+ * void parseRAPacket(void)
+ *
+ * Parse "RA" (stands for "Read Analog") packets.
+ *
+ * Packet prototype :
+ *      RA:<N><LF>
+ *
+ *  - <N>: Analog pin number
+ *
+ * Slave's answer :
+ *      A:AD:<N>:<V><LF>
+ *
+ *  - <N>: Analog pin number
+ *  - <V>: Value
+ */
+void parseRAPacket(void) {
+    unsigned int v1;
+    char answer[] = "A:AD:X:NN";
+    const char digits[] = "0123456789abcdef";
+
+    v1 = extractNumber(1);
+    if (!checkPacketSeparator()) {
+        EPacketTooLong();
+        return;
+    }
+
+    answer[5] = v1 + 0x30;
+    v1 = ADC_Read(v1);
+
+    answer[7] = digits[(v1 & 0xf0) >> 4];
+    answer[8] = digits[v1 & 0x0f];
 
     sendPacket(answer);
     sendConstPacket(IO_SUCCESS);

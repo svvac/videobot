@@ -66,6 +66,8 @@ unsigned short checkArgSeparator(void);
 
 unsigned short checkPacketSeparator(void);
 
+unsigned short manageSeparator(void);
+
 void sendPacket(char*);
 
 void sendError(char*);
@@ -79,6 +81,8 @@ void sendConstError(const char*);
 void sendConstComment(const char*);
 
 long extractNumber(unsigned int);
+
+unsigned int extractHex(void);
 
 void EBadQuery(void);
 

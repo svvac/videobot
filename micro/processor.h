@@ -44,9 +44,13 @@
 
 void parseVPacket(void);
 
+//void parseCPacket(void);
+
 void parseSBPacket(void);
 
 void parseGBPacket(void);
+
+void parseRAPacket(void);
 
 
 #endif

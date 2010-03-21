@@ -75,12 +75,13 @@ void main(void) {
  * I/O config.
  */
 void initializeSystem(void) {
-    /* Setups port A as output and clean */
-    TRISA           = 0x00;
+    /* Setups port A as input and clean */
+    TRISA           = 0xff;
     /* Turns analog inputs to digital inputs and turns off ADC */
-    ADCON1          = 0x0F;
+    //ADCON1          = 0x0f;
+    //ADON_bit        = 0;
     /* Comparators as digital inputs */
-    CMCON           = 0x07;
+    //CMCON           = 0x07;
     /* Cleans */
     PORTA           = 0x00;
 
@@ -112,7 +113,7 @@ void initializeSystem(void) {
     RxBufferClean();
     TxBufferClean();
 
-    /* Wait for the USART module to stamilize */
+    /* Wait for the USART module to stabilize */
     Delay_ms(100);
 }
 

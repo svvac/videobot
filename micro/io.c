@@ -98,6 +98,10 @@ void processIO(void) {
             case 'V':
                 parseVPacket();
                 break;
+            ///* C: Configure packets */
+            //case 'C':
+            //    parseCPacket();
+            //    break;
             /* SB: Set Bit packets */
             case 'S' * 256 + 'B':
             case 'W' * 256 + 'B':
@@ -107,6 +111,9 @@ void processIO(void) {
             case 'R' * 256 + 'B':
             case 'G' * 256 + 'B':
                 parseGBPacket();
+                break;
+            case 'R' * 256 + 'A':
+                parseRAPacket();
                 break;
             default:
                 EWrongCommand();
@@ -204,6 +211,26 @@ unsigned short checkPacketSeparator(void) {
 }
 
 /**
+ * unsigned short manageSeparator(void)
+ *
+ * Check if the next char in buffer is an argument separator. If not,
+ * send the proper error message. If we're at the end of a packet, it
+ * raises an error too.
+ */
+unsigned short manageSeparator(void) {
+    if (!checkArgSeparator()) {
+        EValueError();
+        return false;
+    } else if (checkPacketSeparator()) {
+        EPacketTooShort();
+        return false;
+    }
+    RxBufferPop();
+
+    return true;
+}
+
+/**
  * void sendPacket(char*)
  *
  * Send a normalized packet
@@ -287,7 +314,8 @@ long extractNumber(unsigned int size) {
     char bf;
     const unsigned int pow[4] = {1, 10, 100, 1000};
 
-    size = min(4, size);
+    if (size > 4)
+        size = 4;
 
     for (i = 0; i < size; i++) {
         if (checkSeparator())
@@ -304,6 +332,44 @@ long extractNumber(unsigned int size) {
     }
 
     if (i == size) {
+        return value;
+    } else {
+        EValueError();
+        sendConstComment("Not enough digits.");
+        return -1;
+    }
+}
+
+
+/**
+ * long extractHex(void)
+ *
+ * Extract an hexadecimal pair of digits from the RxBuffer
+ */
+unsigned extractHex(void) {
+    unsigned int i;
+    unsigned int value = 0;
+    char bf;
+    const unsigned int pow[4] = {1, 16};
+
+    for (i = 0; i < 2; i++) {
+        if (checkSeparator())
+            break;
+        bf = toupper(RxBufferGetNext());
+        if (bf >= 0x30 && bf <= 0x39) {
+            value += (bf - 0x30) * pow[1 - i];
+            RxBufferPop();
+        } else if (bf >= 0x41 && bf <= 0x46) {
+            value += (bf - 0x41) * pow[1 - i];
+            RxBufferPop();
+        } else {
+            EValueError();
+            sendConstComment("Not an hex digit.");
+            return -1;
+        }
+    }
+
+    if (i == 2) {
         return value;
     } else {
         EValueError();
