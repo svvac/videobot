@@ -62,8 +62,15 @@ void main(void) {
 
     /* Endless loop */
     do {
-        performIterTasks();
-        processIO();
+        while (RS232DataReady() && RxBufferLeftSpace() > 0) {
+            RxBufferAppend(RS232Read());
+        }
+
+        while (RxBufferGetSize() > 0 && TxBufferLeftSpace() > 0) {
+            TxBufferAppend(RxBufferPop())
+        }
+
+        emitTxBuffer();
     } while (true);
 }
 

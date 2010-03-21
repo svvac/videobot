@@ -52,11 +52,7 @@
  */
 void processIO(void) {
     /* Test programm: send back the buffer to the pc */
-    unsigned int i;
-    for (i = 0; TxBufferGetSize() > 0; i++) {
-        if (i % 2 == 0)
-            continue;
-
+    while (RxBufferGetSize() > 0) {
         TxBufferAppend(RxBufferPop());
     }
 }
