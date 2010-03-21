@@ -45,16 +45,46 @@
 #include "buffer.h"
 #include "rs232.h"
 
+
+
 /**
  * void processIO(void)
  *
  * Perform all I/O related tasks
  */
 void processIO(void) {
-    /* Test programm: send back the buffer to the pc */
-    while (RxBufferGetSize() > 0) {
-        TxBufferAppend(RxBufferPop());
+    unsigned long cmd;
+    unsigned char c1, c2;
+
+    switch (RxBuffergetSize()) {
+        case 0:
+            return;
+            break;
+        case 1:
+            c1 = toupper(RxBufferPop());
+            cmd = c1;
+            break;
+        case 2:
+        default:
+            c1 = toupper(RxBufferPop());
+            c2 = toupper(RxBufferGetNext());
+
+            if (c2 == IO_PACKET_SEPARATOR || c2 == IO_ARG_SEPARATOR) {
+                cmd = c1;
+            } else {
+                cmd = c1 * 256 + c2;
+                RxBufferPop();
+            }
     }
+
+    switch (cmd) {
+        case 'V':
+            sendConstPacket(VERSION);
+            break;
+        default:
+            EWrongCommand();
+    }
+    RxBufferCleanTo(IO_PACKET_SEPARATOR);
 }
 
 /**
@@ -63,6 +93,7 @@ void processIO(void) {
  * Reads RS232 input buffer and adds data to our own buffer
  */
 void populateRxBuffer(void) {
+    Delay_ms(200);
     while (RS232DataReady() && RxBufferLeftSpace() > 0) {
         RxBufferAppend(RS232Read());
     }
@@ -77,4 +108,93 @@ void emitTxBuffer(void) {
     while (TxBufferGetSize() > 0) {
         RS232Write(TxBufferPop());
     }
+}
+
+/**
+ * void sendPacket(char*)
+ *
+ * Send a normalized packet
+ */
+void sendPacket(char* b) {
+    while (*b && TxBufferLeftSpace() > 0)
+        TxBufferAppend(*b++);
+
+    TxBufferAppend('\n');
+}
+
+/**
+ * void sendConstPacket(const char*)
+ *
+ * Send a normalized packet
+ */
+void sendConstPacket(const char* b) {
+    while (*b && TxBufferLeftSpace() > 0)
+        TxBufferAppend(*b++);
+
+    TxBufferAppend('\n');
+}
+
+
+/**
+ * void sendError(char*)
+ *
+ * Send an error packet
+ */
+void sendError(char* b) {
+    TxBufferAppend('!');
+    TxBufferAppend('E');
+    TxBufferAppend(' ');
+    sendPacket(b);
+}
+
+/**
+ * void sendConstError(const char*)
+ *
+ * Send an error packet
+ */
+void sendConstError(const char* b) {
+    TxBufferAppend('!');
+    TxBufferAppend('E');
+    TxBufferAppend(' ');
+    sendConstPacket(b);
+}
+
+/**
+ * void sendComment(char*)
+ *
+ * Send a comment packet
+ */
+void sendComment(char* b) {
+    TxBufferAppend('#');
+    TxBufferAppend(' ');
+    sendPacket(b);
+}
+
+/**
+ * void sendConstComment(const char*)
+ *
+ * Send a comment packet
+ */
+void sendConstComment(const char* b) {
+    TxBufferAppend('#');
+    TxBufferAppend(' ');
+    sendConstPacket(b);
+}
+
+/**
+ * void EBadQuery(void)
+ *
+ * Sends the "BAD QUERY" error message
+ */
+void EBadQuery(void) {
+    sendConstError("01 BAD QUERY");
+}
+
+/**
+ * void EWrongCommand(void)
+ *
+ * Sends the "WRONG COMMAND IDETIFIER" error message
+ */
+void EWrongCommand(void) {
+    sendConstError("02 WRONG COMMAND IDENTIFIER");
 }

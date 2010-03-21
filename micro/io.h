@@ -42,10 +42,32 @@
 #ifndef DEF_IO
 #define DEF_IO
 
+/* Use LF (0x0a, aka \n) as packet separator */
+#define IO_PACKET_SEPARATOR     0x0a
+
+/* Use : as arg separator */
+#define IO_ARG_SEPARATOR        0x3a
+
 void processIO(void);
 
 void populateRxBuffer(void);
 
 void emitTxBuffer(void);
+
+void sendPacket(char*);
+
+void sendError(char*);
+
+void sendComment(char*);
+
+void sendConstPacket(const char*);
+
+void sendConstError(const char*);
+
+void sendConstComment(const char*);
+
+void EBadQuery(void);
+
+void EWrongCommand(void);
 
 #endif
