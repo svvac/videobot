@@ -46,7 +46,7 @@
 unsigned short RS232Initialized = false;
 
 #ifdef RS232_USART
-void RS232Init(void) { USART_Init(2400); RS232Initialized = true; }
+void RS232Init(void) { USART_Init(9600); RS232Initialized = true; }
 
 unsigned short RS232DataReady(void) { return USART_Data_Ready(); }
 
@@ -54,7 +54,7 @@ unsigned char RS232Read() { return USART_Read(); }
 
 void RS232Write(unsigned char b) { USART_Write(b); }
 #else
-void RS232Init(void) { UART1_Init(2400); }
+void RS232Init(void) { UART1_Init(9600); }
 
 unsigned short RS232DataReady(void) { return UART1_Data_Ready(); RS232Initialized = true; }
 

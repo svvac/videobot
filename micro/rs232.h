@@ -32,7 +32,7 @@
  * @subpackage  mcu-slave
  *
  * @created     2010-03-20
- * @updated     2010-03-20
+ * @updated     2010-03-21
  *
  * @web         http://swordofpain.tk/tracker/projects/videobot
  * @repository  http://github.com/swordofpain/videobot
