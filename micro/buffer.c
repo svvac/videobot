@@ -180,7 +180,7 @@ unsigned int RxBufferGetSize(void) {
 }
 
 unsigned int RxBufferLeftSpace(void) {
-    return RxBufferGetSize() - RxBufferGetSize();
+    return RxBUF_SIZE - RxBufferGetSize();
 }
 
 
@@ -209,5 +209,5 @@ unsigned int TxBufferGetSize(void) {
 }
 
 unsigned int TxBufferLeftSpace(void) {
-    return TxBufferGetSize() - TxBufferGetSize();
+    return TxBUF_SIZE - TxBufferGetSize();
 }
