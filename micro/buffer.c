@@ -57,11 +57,8 @@ static void bufferAppend(unsigned char d, unsigned char* buf, unsigned int size)
 
     left = bufferGetSize(buf, size);
 
-    if (left < size) {
+    if (left < size)
         buf[left] = d;
-    } else {
-        bufferCleanTo(PACKET_SEPARATOR, buf, size);
-    }
 }
 
 /**
@@ -74,11 +71,18 @@ static void bufferAppend(unsigned char d, unsigned char* buf, unsigned int size)
 static unsigned char bufferPop(unsigned char* buf, unsigned int size) {
     unsigned char f;
     unsigned int i;
+    unsigned short flag = false;
 
     f = buf[0];
 
     for (i = 0; i < size; i++) {
-        buf[i] = buf[i + 1];
+        if (!flag && buf[i] == 0x00)
+            flag = true;
+
+        if (!flag)
+            buf[i] = buf[i + 1];
+        else
+            buf[i] = 0x00;
     }
 
     return f;
